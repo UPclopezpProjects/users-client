@@ -1,0 +1,57 @@
+<div class="header bg-gradient-green pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <span STYLE="position:absolute; top:0px; left:0px; width:100%; height:420px; background-image: url(./assets/img/brand/aguacate-hass.jpg"></span>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-profile-image">
+            <a href="javascript:void(0)">
+              <img src="./assets/img/brand/usuario.png" class="rounded-circle"><br>
+            </a>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+                <h3 class="display-4 text-black text-center mt-md-6">Mis datos</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label>Nombre de usuario:</label>
+              <input class="form-control" #nameOfUser="ngModel" name="nameOfUser" [(ngModel)]="user.nameOfUser" id="nameOfUser" type="text" disabled>
+            </div>
+            <div class="col">
+              <label>Correo electrónico:</label>
+              <input class="form-control" #email="ngModel" name="email" [(ngModel)]="user.email" id="email" type="email" disabled>
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col">
+              <label>Fecha de registro:</label>
+              <input class="form-control" #creationDate="ngModel" name="creationDate" [(ngModel)]="user.creationDate" id="creationDate" type="text" disabled>
+            </div>
+            <div class="col">
+              <label>Tipo de usuario:</label>
+              <input class="form-control" #typeOfUser="ngModel" name="typeOfUser" [(ngModel)]="user.typeOfUser" id="typeOfUser" type="text" disabled>
+            </div>
+          </div>
+          <div *ngIf="isHidden" class="row">
+            <div class="col">
+              <hr class="my-4" />
+              <a [routerLink]= "['/edit-profile', user.email]" type="submit" class="btn btn-primary">Editar perfil</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

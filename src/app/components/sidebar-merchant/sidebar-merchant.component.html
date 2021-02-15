@@ -1,0 +1,39 @@
+<nav class="navbar navbar-vertical navbar-expand-md navbar-light" id="color">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <div class="profile">
+      <img src="./assets/img/brand/perfil.jpg" alt="" class="img-fluid rounded-circle">
+    </div>
+    <!-- Collapse -->
+    <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed" id="sidenav-collapse-main">
+      <!-- Collapse header -->
+      <!-- Divider -->
+      <hr class="my-3">
+      <!-- Heading -->
+      <h2 class="text-gray">Gestionar datos</h2>
+      <!-- Navigation -->
+      <ul class="navbar-nav mb-md-3">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/merchantsHome']">
+            <i class="bx bx-home text-green"></i> Inicio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/merchantsData']">
+            <i class="bx bx-file-blank text-green"></i> Datos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/merchantsAbout']">
+            <i class="bx bx-user text-green"></i> Acerca de mí
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/merchantsDetail']">
+            <i class="bx bx-book-content text-green"></i> Detalles
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

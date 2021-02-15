@@ -1,0 +1,94 @@
+<section id="resume" class="resume">
+	<div class="container">
+		<div class="section-title">
+			<h2>Datos generales</h2>
+		</div>
+		<form (ngSubmit)="onSubmit()">
+			<div class="row" *ngIf="isMerchant">
+				<div class="col">
+					<label for="map">Mapa:</label>
+					<input class="form-control" #map="ngModel" name="map" [(ngModel)]="merchant.map" id="map" type="text" placeholder="Latitud - Longitud" required="">
+				</div>
+				<div class="col">
+					<label for="id">ID:</label>
+					<input class="form-control" #id="ngModel" name="id" [(ngModel)]="merchant.id" id="id" type="text" placeholder="ID" required="">
+				</div>
+			</div>
+			<div class="row" *ngIf="isCarrier">
+				<div class="col">
+					<label for="pointA">Punto A:</label>
+					<input class="form-control" #pointA="ngModel" name="pointA" [(ngModel)]="merchant.pointA" id="pointA" type="text" placeholder="Ingresa primer punto" required="">
+				</div>
+				<div class="col">
+					<label for="pointB">Punto B:</label>
+					<input class="form-control" #pointB="ngModel" name="pointB" [(ngModel)]="merchant.pointB" id="pointB" type="text" placeholder="Ingresa segundo punto" required="">
+				</div>
+			</div>
+			<div class="row" *ngIf="isAcopio">
+				<div class="col">
+					<label for="harvest">Cultivo ID:</label>
+					<input class="form-control" #harvest="ngModel" name="harvest" [(ngModel)]="merchant.harvest" id="harvest" type="text" placeholder="Ingresa ID de la cosecha" required="">
+				</div>
+				<div class="col">
+					<label for="nameOfAcopio">Nombre del lugar de Acopio:</label>
+					<input class="form-control" #nameOfAcopio="ngModel" name="nameOfAcopio" [(ngModel)]="merchant.nameOfAcopio" id="nameOfAcopio" type="text" placeholder="Ingresa nombre" required="">
+				</div>
+			</div>
+			<div class="row" *ngIf="isProductor">
+				<div class="col">
+					<label for="nameOfCompany">Nombre del lugar de producción:</label>
+					<input class="form-control" #nameOfCompany="ngModel" name="nameOfCompany" [(ngModel)]="merchant.nameOfCompany" id="nameOfCompany" type="text" placeholder="Ingresa nombre de la empresa" required="">
+				</div>
+				<div class="col">
+					<label for="nameOfProductor">Nombre del productor</label>
+					<input class="form-control" #nameOfProductor="ngModel" name="nameOfProductor" [(ngModel)]="merchant.nameOfProductor" id="nameOfProductor" type="text" placeholder="Ingresa el nombre del productor" required="">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label for="fid">FID:</label>
+					<input class="form-control" #fid="ngModel" name="fid" [(ngModel)]="merchant.fid" id="fid" type="text" placeholder="FID" required="">
+				</div>
+				<div class="col">
+					<label for="fe">Fecha:</label>
+					<input class="form-control" #date="ngModel" name="date" [(ngModel)]="merchant.date" id="date" type="text" placeholder="Date" required="">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label for="im">Imagen:</label>
+					<input class="form-control" #image="ngModel" name="image" [(ngModel)]="merchant.image" id="image" type="file" required="">
+				</div>
+				<div class="col">
+					<label for="des">Descripción:</label>
+					<input class="form-control" #description="ngModel" name="description" [(ngModel)]="merchant.description" id="description" type="text" placeholder="Description" required="">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label for="tip">Tipo:</label>
+					<input class="form-control" #type="ngModel" name="type" [(ngModel)]="merchant.type" id="type" type="text" placeholder="Type" required="" disabled>
+				</div>
+				<div class="col">
+					<label for="per">Permisos:</label>
+					<input class="form-control" #permitions="ngModel" name="permitions" [(ngModel)]="merchant.permitions" id="permitions" type="text" placeholder="Habilitados" required="" disabled>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label for="mp">Maps:</label>
+					<div id="floating-panel">
+				      <a class="btn btn-danger" (click)="deleteMarkers()"><label class="text-white">Eliminar marcas</label></a>
+				      <a class="btn btn-danger" (click)="trazar()"><label class="text-white">Trazar marcas</label></a>
+				    </div>
+				    <div id="directions-panel"></div>
+					<div id="map-canvas" class="map-canvas" data-lat="19.360575957611847" data-lng="-99.11245350634144" style="height: 600px;"></div>
+				</div>
+			</div>
+			<br>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success btn-lg">Enviar</button>
+			</div>
+		</form>
+	</div>
+</section>
