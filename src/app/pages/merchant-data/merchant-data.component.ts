@@ -30,6 +30,7 @@ export class MerchantDataComponent implements OnInit {
 	public isAcopio: boolean;
 	public isProductor: boolean;
 	public identity;
+	public token;
 	public title;
 	public users: Users;
 	public merchant: Merchants;
@@ -40,6 +41,7 @@ export class MerchantDataComponent implements OnInit {
 		private _router: Router
 	){
 		this.identity = this._userService.getIdentity();
+		this.token = this._userService.getToken();
 		this.users = JSON.parse(this.identity);
 		this.merchant = new Merchants('', '', '', '', '', '', '', '', '', '', '', '', this.users.typeOfUser, '');
 		this.isMerchant = false;
@@ -77,6 +79,10 @@ export class MerchantDataComponent implements OnInit {
 		}else if(this.users.typeOfUser == 'Carrier'){
 			this._userService.carrierData(this.merchant).subscribe(
 				response => {
+					if(!this.filesToUpload){
+					}else{
+						this.makeFileRequest(url, params, file);
+					}
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
 						'El dato ha sido comprobado correctamente',
@@ -312,4 +318,32 @@ export class MerchantDataComponent implements OnInit {
 		}
 	}
 
+	public filesToUpload: Array<File>;
+	fileChangeEvent(fileInput: any){
+		this.filesToUpload = <Array<File>>fileInput.target.files;
+	}
+
+	makeFileRequest(url: string, params: Array<string>, files: Array<File>){
+		var token = this.token;
+		return new Promise(function(resolve, reject){
+			var formData:any = new FormData();
+			var xhr = new XMLHttpRequest();
+
+			for(var i = 0; i < files.length; i++){
+				formData().append('image', files[i].name);
+			}
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4){
+					if(xhr.status == 200){
+						resolve(JSON.parse(xhr.response));
+					}else{
+						reject(xhr.response);
+					}
+				}
+			}
+			xhr.open('POST', url, true);
+			xhr.setRequestHeader('Authorization', token);
+			xhr.send(formData);
+		});
+	}
 }
