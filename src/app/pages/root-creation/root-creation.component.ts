@@ -6,6 +6,7 @@ import { UserService } from '../../services/user.service';
 import { Users } from '../../models/users';
 
 import Swal from 'sweetalert2';
+var moment = require('moment');
 
 const swalWithBootstrapButtons = Swal.mixin({
 	customClass: {
@@ -40,6 +41,8 @@ export class RootCreationComponent {
 	}
 
 	public onSubmit(){
+		moment.locale('es');
+		var date = ''+moment().format('L')+' - '+moment().format('LT')+'';
 		var md5 = new Md5();
 		if(this.user.email == '' || this.user.nameOfUser == '' || this.user.password == '' || this.user.addressU == ''){
 			return alert("Rellena todos los campos");
@@ -54,7 +57,7 @@ export class RootCreationComponent {
 			nameOfOperation: this.user.nameOfOperation,
 			addressU: this.user.addressU,
 			nameOfUser: this.user.nameOfUser,
-			creationDate: this.user.creationDate,
+			creationDate: date,
 			status: this.user.status,
 			dp: jsonDP
 		};

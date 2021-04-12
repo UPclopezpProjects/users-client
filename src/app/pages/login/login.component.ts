@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	public errorMessage: any;
 
 	constructor(
-		private _userService:UserService,
+		private _userService: UserService,
 		private _route: ActivatedRoute,
 		private _router: Router
 	){
@@ -57,8 +57,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 					localStorage.setItem('identity', JSON.stringify(response.user));
 					if(response.user.typeOfUser == 'Root' || response.user.typeOfUser == 'Administrator'){
 						this._router.navigate(['/welcome']);
-					}else{
+					}else if(response.user.typeOfUser == 'Merchant' || response.user.typeOfUser == 'Carrier' || response.user.typeOfUser == 'Acopio' || response.user.typeOfUser == 'Productor'){
 						this._router.navigate(['/merchantsHome']);
+					}else{
+						swalWithBootstrapButtons.fire(
+							'Error',
+							'ERROR EN EL TIPO DE USUARIO',
+							'warning'
+						)
+
 					}
 				}else if(response.message == false){
 					this.errorMessage = "No tienes permisos para ingresar al sistema";
