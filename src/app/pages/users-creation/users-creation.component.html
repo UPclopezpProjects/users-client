@@ -33,7 +33,7 @@
 						<!--Modificar para que agarre el MD5-->
 						<p *ngIf="!isHidden">HashX:</p><input #hashX="ngModel" name="hashX" [(ngModel)]="user.hashX" id="hashX" type="text" placeholder="HashX" required="" disabled="true" *ngIf="!isHidden">
 						<p>Tipo de usuario:</p>
-						<select #typeOfUser="ngModel" name="typeOfUser" [(ngModel)]="user.typeOfUser" id="typeOfUser" [(value)]="selected" (ngModelChange)="onChange()">
+						<select #typeOfUser="ngModel" name="typeOfUser" [(ngModel)]="user.typeOfUser" id="typeOfUser" (ngModelChange)="onChange()">
 							<option value="">---Selecciona---</option>
 							<option value="Administrator">Administrador</option>
 							<option value="TUser">Usuario normal</option>

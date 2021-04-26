@@ -9,7 +9,7 @@ import { Users } from '../../models/users';
   selector: 'app-users-delete',
   templateUrl: './users-delete.component.html',
   providers: [UserService],
-  styleUrls: ['./users-delete.component.css']
+  styleUrls: ['./users-delete.component.scss']
 })
 export class UsersDeleteComponent implements OnInit {
 	public token: any;
@@ -46,7 +46,7 @@ export class UsersDeleteComponent implements OnInit {
 		this._route.params.forEach((params: Params) =>{
 			let id = params['id'];
 			this._userService.getUser(this.token, id).subscribe(
-			response => {
+			(response:any) => {
 				console.log(response.user);
 				if(!response.user){
 					this._router.navigate(['/']);
@@ -62,7 +62,8 @@ export class UsersDeleteComponent implements OnInit {
 						this.nameOfOperation = null;
 					}
 					var responseDP = JSON.parse(response.user.dp);
-					var jsonData = {
+					var jsonData:any;
+          jsonData = {
 						email: response.user.email,
 						password: response.user.password,
 						typeOfUser: response.user.typeOfUser,
@@ -100,7 +101,7 @@ export class UsersDeleteComponent implements OnInit {
 				if(errorMessage != null){
 					//console.log("Administrator: "+error.error.message);
 					this.errorMessage = error.error.message;
-					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
 		)
@@ -113,7 +114,7 @@ export class UsersDeleteComponent implements OnInit {
 			nameOfOperation: this.user.nameOfOperation,
 		};
 		this._userService.deleteUsers(this.user.email, jsonData).subscribe(
-			response => {
+			(response:any) => {
 				this._router.navigate(['/tables/1']);
 			},
 			error => {

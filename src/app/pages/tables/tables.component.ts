@@ -75,7 +75,7 @@ export class TablesComponent implements OnInit {
 				}
 			}
 			this._userService.getUsers(this.token, page).subscribe(
-				response => {
+				(response:any) => {
 					this.items = response.total_items - 1;
 					if(response.users.length == 0){
 						swalWithBootstrapButtons.fire(
@@ -88,6 +88,8 @@ export class TablesComponent implements OnInit {
 					if(!response.users){
 						this._router.navigate(['/']);
 					}else{
+						console.log(response.users);
+
 						this.users = response.users;
 	                    for(var user of response.users){
 	                    	if(user.status == 'true'){
@@ -104,7 +106,7 @@ export class TablesComponent implements OnInit {
 					if(errorMessage != null){
 						//console.log("Administrator: "+error.error.message);
 						this.errorMessage = error.error.message;
-						this.users = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+						this.users = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
 					}
 				}
 			)
@@ -141,7 +143,7 @@ export class TablesComponent implements OnInit {
 					nameOfOperation: this.nameOfOperation,
 				};
 				this._userService.deleteUsers(email, jsonData).subscribe(
-					response => {
+					(response:any) => {
 						swalWithBootstrapButtons.fire(
 					      '¡Borrado!',
 					      'El registro ha sido eliminado',
@@ -177,8 +179,8 @@ export class TablesComponent implements OnInit {
 			if(this.user.email == user.email){
 				this._router.navigate(['/user-profile']);
 			}else if(user.email == email){
-				this.usersToUpdate = user;
-				var responseDP = JSON.parse(this.usersToUpdate.dp);
+				//this.usersToUpdate = user;
+				var responseDP = JSON.parse(user.dp);
 				if(user.typeOfUser == 'Administrator'){
 					this.nameOfOperation = 'updateAdministrator';
 				}else if(user.typeOfUser == 'TUser' || user.typeOfUser == 'Merchant' || user.typeOfUser == 'Carrier' || user.typeOfUser == 'Acopio' || user.typeOfUser == 'Productor'){
@@ -261,21 +263,21 @@ export class TablesComponent implements OnInit {
 		  focusConfirm: false,
 		  preConfirm: () => {
 		    return [
-		      document.getElementById('swal-input1').value,
-		      document.getElementById('swal-input2').value,
-		      document.getElementById('swal-input3').value,
-		      document.getElementById('swal-input4').value,
-		      document.getElementById('swal-input5').value,
-		      document.getElementById('swal-input6').value,
-		      document.getElementById('swal-input7').value,
-		      document.getElementById('swal-input8').value,
-		      document.getElementById('swal-input9').value,
-		      document.getElementById('swal-input10').value,
-		      document.getElementById('swal-input11').value,
-		      document.getElementById('swal-input12').value,
-		      document.getElementById('swal-input13').value,
-		      document.getElementById('swal-input14').value,
-		      document.getElementById('swal-input15').value,
+					(<HTMLInputElement>document.getElementById('swal-input1')).value,
+					(<HTMLInputElement>document.getElementById('swal-input2')).value,
+					(<HTMLInputElement>document.getElementById('swal-input3')).value,
+					(<HTMLInputElement>document.getElementById('swal-input4')).value,
+					(<HTMLInputElement>document.getElementById('swal-input5')).value,
+					(<HTMLInputElement>document.getElementById('swal-input6')).value,
+					(<HTMLInputElement>document.getElementById('swal-input7')).value,
+					(<HTMLInputElement>document.getElementById('swal-input8')).value,
+					(<HTMLInputElement>document.getElementById('swal-input9')).value,
+					(<HTMLInputElement>document.getElementById('swal-input10')).value,
+					(<HTMLInputElement>document.getElementById('swal-input11')).value,
+					(<HTMLInputElement>document.getElementById('swal-input12')).value,
+					(<HTMLInputElement>document.getElementById('swal-input13')).value,
+					(<HTMLInputElement>document.getElementById('swal-input14')).value,
+					(<HTMLInputElement>document.getElementById('swal-input15')).value
 		    ]
 		  }
 		})

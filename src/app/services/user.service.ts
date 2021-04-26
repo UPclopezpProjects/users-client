@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs'
-
+import { Observable, throwError, forkJoin } from 'rxjs'
 import { Users } from '../models/users';
 import { GLOBAL } from './global';
 
 @Injectable()
 export class UserService{
 	public token: any;
+	public session: any;
 	public user: any;
 	public url: string;
 
@@ -30,15 +30,33 @@ export class UserService{
 			//.pipe(map(data => new user(data)));
 	}
 
+	getInitialNonce(na, gethash = null){
+		let json = JSON.stringify(na);
+		let params = json;
+
+
+		let headers = new HttpHeaders().set('Content-Type', 'application/json');
+		//let headers = new Headers({'Content-Type':'aplication/json'});
+
+		return this._http.post(this.url+'getInitialNonce', params, {headers: headers});
+			//}.pipe(map(res => res.json()));
+			//.pipe(map(data => new user(data)));
+	}
+
 	createRoot(user, gethash = null){
 		if(gethash != null){
 			user.gethash = gethash;
 		}
 		let json = JSON.stringify(user);
 		let params = json;
+		let token = this.getToken();
+		let session = this.getSession();
+ 		console.log(token, session);
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token)
+			.set('Session', session);
 
-
-		let headers = new HttpHeaders().set('Content-Type', 'application/json');
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 
 		return this._http.post(this.url+'userCreation', params, {headers: headers});
@@ -104,6 +122,16 @@ export class UserService{
 		return this.token;
 	}
 
+	getSession(){
+		let session = localStorage.getItem('session');
+		if(session != "undefined"){
+			this.session = session;
+		}else{
+			this.session = null;
+		}
+		return this.session;
+	}
+
 	getIdentity(){
 		let user = localStorage.getItem('identity');
 		if(user != "undefined"){
@@ -144,16 +172,27 @@ export class UserService{
 			//.pipe(map(data => new user(data)));
 	}
 
+	requestDataFromMultipleSources(): Observable<any[]> {
+		let responseP = this._http.get(this.url+'getProductorData');
+	  let responseA = this._http.get(this.url+'getAcopioData');
+	  let responseC = this._http.get(this.url+'getCarrierData');
+		let responseM = this._http.get(this.url+'getMerchantData');
+		// Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
+		return forkJoin([responseP, responseA, responseC, responseM]);
+	}
+
+	getData(){
+		return this._http.get(this.url+'getData');
+	}
+
 	merchantData(merchant, gethash = null){
 		if(gethash != null){
 			merchant.gethash = gethash;
 		}
 		let json = JSON.stringify(merchant);
 		let params = json;
-		let token = this.getToken();
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json')
-			.set('Authorization', token);
+			.set('Content-Type', 'application/json');
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 

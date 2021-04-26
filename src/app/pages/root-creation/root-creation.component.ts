@@ -18,7 +18,7 @@ const swalWithBootstrapButtons = Swal.mixin({
   selector: 'root-creation',
   templateUrl: './root-creation.component.html',
   providers: [UserService],
-  styleUrls: ['./root-creation.component.css']
+  styleUrls: ['./root-creation.component.scss']
 })
 export class RootCreationComponent {
 	public isHidden: boolean;
@@ -32,7 +32,7 @@ export class RootCreationComponent {
 		private _router: Router
 	){
 		this.isHidden = true;
-		this.user = new Users('', '', 'Root', '', 'create', 'createRoot', '', '', true, 'xx/xx/xxxx', '', true, true, true, true, true, true, true, true, true, true, true, true);
+		this.user = new Users('', '', '', '', 'Root', '', 'create', 'createRoot', '', '', true, 'xx/xx/xxxx', '', true, true, true, true, true, true, true, true, true, true, true, true);
 		//this.user = new Users('email', 'password', 'typeOfUser', 'initialToken', 'typeOfOperation', 'nameOfOperation', 'addressU', 'hashX', 'status', 'creationDate', 'nameOfUser', 'dp1', 'dp2', 'dp3', 'dp4', 'dp5', 'dp6', 'dp7', 'dp8', 'dp9', 'dp10', 'dp11', 'dp12');
 	}
 
@@ -45,24 +45,30 @@ export class RootCreationComponent {
 			return alert("Rellena todos los campos");
 		}
 		var jsonDP = '{ "createAdministrator": '+this.user.dp1+', "createTUser": '+this.user.dp2+', "updateMe": '+this.user.dp3+', "updateAdministrator": '+this.user.dp4+', "updateTUser": '+this.user.dp5+', "deleteMe": '+this.user.dp6+', "deleteAdministrator": '+this.user.dp7+', "deleteTUser": '+this.user.dp8+', "readMe": '+this.user.dp9+', "readAdministrator": '+this.user.dp10+', "readTUser": '+this.user.dp11+', "loginUser": '+this.user.dp12+' }';
-		var jsonData = {
-			email: this.user.email,
+		var jsonData:any;
+		jsonData = {
+			email: this.user.email.toLowerCase(),
 			password: this.user.password,
+			surnameA: this.user.surnameA,
+			surnameB: this.user.surnameB,
+			nameOfUser: this.user.nameOfUser,
 			typeOfUser: this.user.typeOfUser,
+			status: this.user.status,
+			creationDate: this.user.creationDate,
 			initialToken: this.user.initialToken,
+			addressU: this.user.addressU,
 			typeOfOperation: this.user.typeOfOperation,
 			nameOfOperation: this.user.nameOfOperation,
-			addressU: this.user.addressU,
-			nameOfUser: this.user.nameOfUser,
-			creationDate: this.user.creationDate,
-			status: this.user.status,
 			dp: jsonDP
 		};
-		 //CHECAR EL MD5 PARA DESPUÉS
+
+		console.log(jsonData);
+		//CHECAR EL MD5 PARA DESPUÉS
 		var hashX = md5.appendStr(JSON.stringify(jsonData)).end();
-		 jsonData.hashX = hashX;
+		jsonData.hashX = hashX;
+
 		this._userService.createRoot(jsonData).subscribe(
-			response => {
+			 (response:any) => {
 				//console.log(response.message);
 				//this.rootCreation = false;
 				//this.menu = true;
@@ -91,5 +97,3 @@ export class RootCreationComponent {
 		)
 	}
 }
-
-

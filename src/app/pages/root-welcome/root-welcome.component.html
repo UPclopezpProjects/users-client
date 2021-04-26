@@ -12,7 +12,10 @@
                 <h4>Está por crear un usuario ROOT...</h4>
             </div>
             <div class="text-center">
-              <button class="btn btn-success" [routerLink]= "['/rootCreation']">Continuar</button>
+              <form (ngSubmit)="onSubmit()">
+                <p *ngIf="!isHidden">NA:</p><input #na="ngModel" name="na" [(ngModel)]="root.na" id="na" type="text" placeholder="na" required="" disabled="true" *ngIf="!isHidden">
+                <button class="btn btn-success" type="Continuar">Registrar</button>
+              </form>
             </div>
         </div>
       </div>

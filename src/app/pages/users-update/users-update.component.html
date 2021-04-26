@@ -23,7 +23,7 @@
 						<p *ngIf="!isHidden">Nombre de operación:</p><input class="form-control" #nameOfOperation="ngModel" name="nameOfOperation" [(ngModel)]="user.nameOfOperation" id="nameOfOperation" type="text" placeholder="Nombre de operación" required="" disabled="true" *ngIf="!isHidden">
 						<p *ngIf="!isHidden">LLave:</p><input class="form-control" #addressU="ngModel" name="addressU" [(ngModel)]="user.addressU" id="addressU" type="text" placeholder="AddressU" required="" *ngIf="!isHidden">
 						<p *ngIf="isHidden">Estado:</p>
-						<select #status="ngModel" name="status" [(ngModel)]="user.status" id="status" [(value)]="selected">
+						<select #status="ngModel" name="status" [(ngModel)]="user.status" id="status">
 							<option value=true>Habilitado</option>
 							<option value=false>Deshabilitado</option>
 						</select><br>
@@ -52,4 +52,3 @@
 		</div>
 	</div>
 </div>
-

@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 			return alert("Rellena todos los campos");
 		}
 		this._userService.singUp(this.user).subscribe(
-			response => {
+			(response:any) => {
 				console.log(response);
 				if(response.message == true){
 					//console.log(response.user);
@@ -89,4 +89,3 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
 }
-

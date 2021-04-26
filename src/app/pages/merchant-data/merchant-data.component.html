@@ -4,77 +4,84 @@
 			<h2>Datos generales</h2>
 		</div>
 		<form (ngSubmit)="onSubmit()">
-			<div class="row" *ngIf="isMerchant">
-				<div class="col">
-					<label for="map">Mapa:</label>
-					<input class="form-control" #map="ngModel" name="map" [(ngModel)]="merchant.map" id="map" type="text" placeholder="Latitud - Longitud" required="">
+			<div *ngIf="isMerchant">
+				<div class="row">
+					<div class="col">
+						<label for="code">Code:</label>
+						<input class="form-control" #code="ngModel" name="code" [(ngModel)]="merchant.code" id="code" type="text" placeholder="Ingresa el QR" required="">
+					</div>
 				</div>
 				<div class="col">
-					<label for="id">ID:</label>
-					<input class="form-control" #id="ngModel" name="id" [(ngModel)]="merchant.id" id="id" type="text" placeholder="ID" required="">
-				</div>
-			</div>
-			<div class="row" *ngIf="isCarrier">
-				<div class="col">
-					<label for="pointA">Punto A:</label>
-					<input class="form-control" #pointA="ngModel" name="pointA" [(ngModel)]="merchant.pointA" id="pointA" type="text" placeholder="Ingresa primer punto" required="">
-				</div>
-				<div class="col">
-					<label for="pointB">Punto B:</label>
-					<input class="form-control" #pointB="ngModel" name="pointB" [(ngModel)]="merchant.pointB" id="pointB" type="text" placeholder="Ingresa segundo punto" required="">
 				</div>
 			</div>
-			<div class="row" *ngIf="isAcopio">
-				<div class="col">
-					<label for="harvest">Cultivo ID:</label>
-					<input class="form-control" #harvest="ngModel" name="harvest" [(ngModel)]="merchant.harvest" id="harvest" type="text" placeholder="Ingresa ID de la cosecha" required="">
-				</div>
-				<div class="col">
-					<label for="nameOfAcopio">Nombre del lugar de Acopio:</label>
-					<input class="form-control" #nameOfAcopio="ngModel" name="nameOfAcopio" [(ngModel)]="merchant.nameOfAcopio" id="nameOfAcopio" type="text" placeholder="Ingresa nombre" required="">
-				</div>
+			<div *ngIf="isCarrier">
 			</div>
-			<div class="row" *ngIf="isProductor">
-				<div class="col">
-					<label for="nameOfCompany">Nombre del lugar de producción:</label>
-					<input class="form-control" #nameOfCompany="ngModel" name="nameOfCompany" [(ngModel)]="merchant.nameOfCompany" id="nameOfCompany" type="text" placeholder="Ingresa nombre de la empresa" required="">
-				</div>
-				<div class="col">
-					<label for="nameOfProductor">Nombre del productor</label>
-					<input class="form-control" #nameOfProductor="ngModel" name="nameOfProductor" [(ngModel)]="merchant.nameOfProductor" id="nameOfProductor" type="text" placeholder="Ingresa el nombre del productor" required="">
-				</div>
+			<div *ngIf="isAcopio">
 			</div>
-			<div class="row">
-				<div class="col">
-					<label for="fid">FID:</label>
-					<input class="form-control" #fid="ngModel" name="fid" [(ngModel)]="merchant.fid" id="fid" type="text" placeholder="FID" required="">
+			<div *ngIf="isProductor">
+				<div class="row">
+					<div class="col">
+						<label for="harvestDate">Fecha de cosecha:</label>
+						<input class="form-control" #harvestDate="ngModel" name="harvestDate" [(ngModel)]="productor.harvestDate" id="harvestDate" type="text" placeholder="Ingresa la fecha de corte del producto o productos" required="">
+					</div>
+					<div class="col">
+						<label for="caducationDate">Fecha de caducidad:</label>
+						<input class="form-control" #caducationDate="ngModel" name="caducationDate" [(ngModel)]="productor.caducationDate" id="caducationDate" type="text" placeholder="Ingresa la fecha de caducidad del producto o productos" required="">
+					</div>
 				</div>
-				<div class="col">
-					<label for="fe">Fecha:</label>
-					<input class="form-control" #date="ngModel" name="date" [(ngModel)]="merchant.date" id="date" type="text" placeholder="Date" required="">
+				<div class="row">
+					<div class="col">
+						<label for="description">Description:</label>
+						<input class="form-control" #description="ngModel" name="description" [(ngModel)]="productor.description" id="description" type="text" placeholder="Describe el producto" required="">
+					</div>
+					<div class="col">
+						<label for="image">Imagen:</label>
+						<input class="form-control" #image="ngModel" name="image" [(ngModel)]="productor.image" id="image" type="text" placeholder="IMAGEN" required="">
+					</div>
+					<div class="col">
+						<label for="documentation">Documentation:</label>
+						<input class="form-control" #documentation="ngModel" name="documentation" [(ngModel)]="productor.documentation" id="documentation" type="text" placeholder="Documentos que garantizan la calidad de tu producto" required="">
+					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
-					<label for="im">Imagen:</label>
-					<input class="form-control" #image="ngModel" name="image" [(ngModel)]="merchant.image" id="image" type="file" required="" (change)="fileChangeEvent($event)">
+					<label for="fid">Nombre del proveedor:</label>
+					<select  class="form-control" #fid="ngModel" name="fid" [(ngModel)]="tuser.fid" id="fid" (ngModelChange)="onChange()">
+						<option value="null">Ninguno</option>
+						<option value="{{productor._id}}" *ngFor="let productor of dataP">{{productor.name}}</option>
+						<option value="{{acopio._id}}" *ngFor="let acopio of dataA">{{acopio.name}}</option>
+						<option value="{{carrier._id}}" *ngFor="let carrier of dataC">{{carrier.name}}</option>
+						<option value="{{merchant._id}}" *ngFor="let merchant of dataM">{{merchant.name}}</option>
+					</select>
 				</div>
 				<div class="col">
-					<label for="des">Descripción:</label>
-					<input class="form-control" #description="ngModel" name="description" [(ngModel)]="merchant.description" id="description" type="text" placeholder="Description" required="">
+					<label for="ubication">Ubicación:</label>
+					<input class="form-control" #ubication="ngModel" name="ubication" [(ngModel)]="tuser.ubication" id="ubication" type="text" placeholder="Ubicación" required="">
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
-					<label for="tip">Tipo:</label>
-					<input class="form-control" #type="ngModel" name="type" [(ngModel)]="merchant.type" id="type" type="text" placeholder="Type" required="" disabled>
+					<label for="name">Nombre de la empresa:</label>
+					<input class="form-control" #name="ngModel" name="name" [(ngModel)]="tuser.name" id="name" type="text" placeholder="Ingresa el nombre de tu empresa" required="">
+					<!--<input class="form-control" #image="ngModel" name="image" [(ngModel)]="merchant.image" id="image" type="file" required="" (change)="fileChangeEvent($event)">-->
 				</div>
 				<div class="col">
-					<label for="per">Permisos:</label>
-					<input class="form-control" #permitions="ngModel" name="permitions" [(ngModel)]="merchant.permitions" id="permitions" type="text" placeholder="Habilitados" required="" disabled>
+					<label for="permitions">Permisos:</label>
+					<input class="form-control" #permitions="ngModel" name="permitions" [(ngModel)]="tuser.permitions" id="permitions" type="text" placeholder="Habilitados" required="" disabled>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" *ngIf="!isHidden"> <!--Show in dev -->
+				<div class="col">
+					<label for="currentStage">Etapa actual:</label>
+					<input class="form-control" #currentStage="ngModel" name="currentStage" [(ngModel)]="tuser.currentStage" id="currentStage" type="text" placeholder="Etapa actual" required="" disabled>
+				</div>
+				<div class="col">
+					<label for="previousStage">Etapa anterior:</label>
+					<input class="form-control" #previousStage="ngModel" name="previousStage" [(ngModel)]="tuser.previousStage" id="previousStage" type="text" placeholder="Etapa anterior" required="" disabled>
+				</div>
+			</div>
+			<!--<div class="row">
 				<div class="col">
 					<label for="mp">Maps:</label>
 					<div id="floating-panel">
@@ -84,7 +91,7 @@
 				    <div id="directions-panel"></div>
 					<div id="map-canvas" class="map-canvas" data-lat="19.360575957611847" data-lng="-99.11245350634144" style="height: 600px;"></div>
 				</div>
-			</div>
+			</div>-->
 			<br>
 			<div class="form-group">
 				<button type="submit" class="btn btn-success btn-lg">Enviar</button>

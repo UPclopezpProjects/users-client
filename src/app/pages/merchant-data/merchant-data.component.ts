@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Merchants } from '../../models/merchant';
 import { UserService } from '../../services/user.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Users } from '../../models/users';
+import { Productors } from '../../models/productors';
+import { Acopios } from '../../models/acopios';
+import { Carriers } from '../../models/carriers';
+import { Merchants } from '../../models/merchants';
+import { TUsers } from '../../models/tusers';
 declare const google: any;
-
 import Swal from 'sweetalert2';
 
 const swalWithBootstrapButtons = Swal.mixin({
@@ -14,7 +17,6 @@ const swalWithBootstrapButtons = Swal.mixin({
 	},
 	buttonsStyling: false
 })
-
 
 @Component({
   selector: 'app-merchant-data',
@@ -29,11 +31,23 @@ export class MerchantDataComponent implements OnInit {
 	public isCarrier: boolean;
 	public isAcopio: boolean;
 	public isProductor: boolean;
+	public isHidden: boolean;
 	public identity;
 	public token;
 	public title;
 	public users: Users;
+	public productor: Productors;
+	public acopio: Acopios;
+	public carrier: Carriers;
 	public merchant: Merchants;
+	public tuser: TUsers;
+
+	public dataP: any;
+	public dataA: any;
+	public dataC: any;
+	public dataM: any;
+
+
 	public markers = [];
 
 	constructor(
@@ -43,24 +57,38 @@ export class MerchantDataComponent implements OnInit {
 		this.identity = this._userService.getIdentity();
 		this.token = this._userService.getToken();
 		this.users = JSON.parse(this.identity);
-		this.merchant = new Merchants('', '', '', '', '', '', '', '', '', '', '', '', this.users.typeOfUser, '');
+		this.tuser = new TUsers('null', '', '', 'null', this.users.typeOfUser);
+		this.productor = new Productors('', '', '', '', '');
+		this.acopio = new Acopios();
+		this.carrier = new Carriers();
+		this.merchant = new Merchants('');
 		this.isMerchant = false;
 		this.isCarrier = false;
 		this.isAcopio = false;
 		this.isProductor = false;
+		this.isHidden = false;
 	}
 
 	public onSubmit(){
-		//console.log(this.merchant);
+		var jsonData:any
+		jsonData = {
+			fid: this.tuser.fid,
+			ubication: this.tuser.ubication,
+			name: this.tuser.name,
+			previousStage: this.tuser.previousStage,
+			currentStage: this.tuser.currentStage
+		};
 		if(this.users.typeOfUser == 'Merchant'){
-			this._userService.merchantData(this.merchant).subscribe(
-				response => {
+			jsonData.code = this.merchant.code;
+			this._userService.merchantData(jsonData).subscribe(
+				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
 						'El dato ha sido comprobado correctamente',
 						'success'
 					)
 					console.log(response);
+					this.tuser = new TUsers('', '', '', '', this.users.typeOfUser);
 					this.infoMessage = response.message;
 				},
 				error => {
@@ -77,12 +105,9 @@ export class MerchantDataComponent implements OnInit {
 				}
 			)
 		}else if(this.users.typeOfUser == 'Carrier'){
-			this._userService.carrierData(this.merchant).subscribe(
-				response => {
-					if(!this.filesToUpload){
-					}else{
-						this.makeFileRequest(url, params, file);
-					}
+			//jsonData.code = this.merchant.code; Changes when carrier get data
+			this._userService.carrierData(jsonData).subscribe(
+				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
 						'El dato ha sido comprobado correctamente',
@@ -104,8 +129,9 @@ export class MerchantDataComponent implements OnInit {
 				}
 			)
 		}else if(this.users.typeOfUser == 'Acopio'){
-			this._userService.acopioData(this.merchant).subscribe(
-				response => {
+			//jsonData.code = this.merchant.code; Changes when acopio get data
+			this._userService.acopioData(jsonData).subscribe(
+				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
 						'El dato ha sido comprobado correctamente',
@@ -127,8 +153,13 @@ export class MerchantDataComponent implements OnInit {
 				}
 			)
 		}else if(this.users.typeOfUser == 'Productor'){
-			this._userService.productorData(this.merchant).subscribe(
-				response => {
+			jsonData.harvestDate = this.productor.harvestDate;
+			jsonData.caducationDate = this.productor.caducationDate;
+			jsonData.description = this.productor.description;
+			jsonData.documentation = this.productor.documentation;
+			jsonData.image = this.productor.image;
+			this._userService.productorData(jsonData).subscribe(
+				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
 						'El dato ha sido comprobado correctamente',
@@ -153,6 +184,18 @@ export class MerchantDataComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this._userService.getData().subscribe(
+			(response:any) => {
+				this.dataP = response.productor;
+				this.dataA = response.acopio;
+				this.dataC = response.carrier;
+				this.dataM = response.merchant;
+				//onsole.log(this.dataP, this.dataA, this.dataC, this.dataM);
+			});
+		/*this._userService.requestDataFromMultipleSources().subscribe(responseList => {
+			this.data = responseList;
+			console.log(this.data);
+		});*/
 		if(this.users.typeOfUser == 'Merchant'){
 			this.isMerchant = true;
 			this.isCarrier = false;
@@ -174,176 +217,28 @@ export class MerchantDataComponent implements OnInit {
 			this.isAcopio = false;
 			this.isProductor = true;
 		}
-		this.getMap();
 	}
 
-	getMap() {
-		var coords;
-		var marker;
-		var latitude;
-		var longitude;
-		let map = document.getElementById('map-canvas');
-    	let lat = map.getAttribute('data-lat');
-    	let lng = map.getAttribute('data-lng');
-    	var myLatlng = new google.maps.LatLng(lat, lng);
-
-    	var mapOptions = {
-	        zoom: 12,
-	        scrollwheel: false,
-	        center: myLatlng,
-	        mapTypeId: google.maps.MapTypeId.ROADMAP,
-	        styles: [
-	          {"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},
-	          {"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},
-	          {"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},
-	          {"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},
-	          {"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},
-	          {"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},
-	          {"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},
-	          {"featureType":"water","elementType":"all","stylers":[{"color":'#5e72e4'},{"visibility":"on"}]}]
-	    }
-
-	    map = new google.maps.Map(map, mapOptions);
-
-	    // Create the initial InfoWindow.
-	    let infoWindow = new google.maps.InfoWindow({
-	    	content: "Click the map to get Lat/Lng!",
-		    position: myLatlng,
-		});
-
-		// Configure the click listener.
-		map.addListener("click", (mapsMouseEvent) => {
-			// Close the current InfoWindow.
-			infoWindow.close();
-			// Create a new InfoWindow.
-			infoWindow = new google.maps.InfoWindow({
-				position: mapsMouseEvent.latLng,
-			});
-
-			var latLngJSON = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2);
-
-			infoWindow.setContent(
-				latLngJSON
-			);
-			coords = JSON.parse(latLngJSON); //ESTE DATO ES EL QUE SE DEBERÍA ENVIAR
-			if(this.merchant.pointA == ''){
-				this.merchant.pointA = ''+coords.lat+', '+coords.lng+'';
-				marker = new google.maps.Marker({
-					position: mapsMouseEvent.latLng,
-				 	map: map,
-				 	animation: google.maps.Animation.DROP,
-				 	title: 'Punto A'
-				});
-				this.markers.push(marker);
-			}else if(this.merchant.pointA != '' && this.merchant.pointB == ''){
-				this.merchant.pointB = ''+coords.lat+', '+coords.lng+'';
-				marker = new google.maps.Marker({
-					position: mapsMouseEvent.latLng,
-					map: map,
-					animation: google.maps.Animation.DROP,
-					title: 'Punto B'
-				});
-				this.markers.push(marker);
-			}else{
-				swalWithBootstrapButtons.fire(
-					'¡Error!',
-					'El límite de puntos es 2',
-					'error'
-				)
+	onChange(){
+		for(var productor of this.dataP){
+			if(productor._id == this.tuser.fid){
+				this.tuser.previousStage = 'Productor';
 			}
-			infoWindow.open(map);
-		});
-	}
-
-	trazar(){
-		let map = document.getElementById('map-canvas');
-    	const directionsService = new google.maps.DirectionsService();
-		const directionsRenderer = new google.maps.DirectionsRenderer();
-		directionsRenderer.setMap(map);
-		this.calculateAndDisplayRoute(directionsService, directionsRenderer);
-	}
-
-	calculateAndDisplayRoute(
-		directionsService: google.maps.DirectionsService,
-		directionsRenderer: google.maps.DirectionsRenderer
-		) {
-
-		directionsService.route(
-		{
-			origin: this.merchant.pointA,
-			destination: this.merchant.pointB,
-			waypoints: [{location: this.merchant.pointA, stopover: false},
-                        {location: this.merchant.pointB, stopover: false}],
-			optimizeWaypoints: true,
-			travelMode: google.maps.TravelMode.DRIVING,
-		},
-		(response, status) => {
-			if (status === "OK" && response) {
-				directionsRenderer.setDirections(response);
-				const route = response.routes[0];
-				const summaryPanel = document.getElementById(
-					"directions-panel"
-					) as HTMLElement;
-				summaryPanel.innerHTML = "";
-
-				for (let i = 0; i < route.legs.length; i++) {
-					const routeSegment = i + 1;
-					summaryPanel.innerHTML +=
-					"<b>Route Segment: " + routeSegment + "</b><br>";
-					summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-					 summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-					 summaryPanel.innerHTML += route.legs[i].distance!.text + "<br><br>";
-					}
-				} else {
-					window.alert("Directions request failed due to " + status);
-				}
-			}
-			);
-	}
-
-	deleteMarkers() {
-		this.merchant.pointA = '';
-		this.merchant.pointB = '';
-		this.clearMarkers();
-		this.markers = [];
-	}
-
-	clearMarkers() {
-		this.setMapOnAll(null);
-	}
-
-	setMapOnAll(map) {
-		for (let i = 0; i < this.markers.length; i++) {
-			this.markers[i].setMap(map);
 		}
-	}
-
-	public filesToUpload: Array<File>;
-	fileChangeEvent(fileInput: any){
-		this.filesToUpload = <Array<File>>fileInput.target.files;
-	}
-
-	makeFileRequest(url: string, params: Array<string>, files: Array<File>){
-		var token = this.token;
-		return new Promise(function(resolve, reject){
-			var formData:any = new FormData();
-			var xhr = new XMLHttpRequest();
-
-			for(var i = 0; i < files.length; i++){
-				formData().append('image', files[i].name);
+		for(var acopio of this.dataA){
+			if(acopio._id == this.tuser.fid){
+				this.tuser.previousStage = 'Acopio';
 			}
-			xhr.onreadystatechange = function(){
-				if(xhr.readyState == 4){
-					if(xhr.status == 200){
-						resolve(JSON.parse(xhr.response));
-					}else{
-						reject(xhr.response);
-					}
-				}
+		}
+		for(var carrier of this.dataC){
+			if(carrier._id == this.tuser.fid){
+				this.tuser.previousStage = 'Carrier';
 			}
-			xhr.open('POST', url, true);
-			xhr.setRequestHeader('Authorization', token);
-			xhr.send(formData);
-		});
+		}
+		for(var merchant of this.dataM){
+			if(merchant._id == this.tuser.fid){
+				this.tuser.previousStage = 'Merchant';
+			}
+		}
 	}
 }

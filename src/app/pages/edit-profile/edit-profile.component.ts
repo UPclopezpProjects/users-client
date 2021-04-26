@@ -19,7 +19,7 @@ const swalWithBootstrapButtons = Swal.mixin({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
   providers: [UserService],
-  styleUrls: ['./edit-profile.component.css']
+  styleUrls: ['./edit-profile.component.scss']
 })
 
 export class EditProfileComponent implements OnInit {
@@ -49,7 +49,7 @@ export class EditProfileComponent implements OnInit {
 
   	public getUser(){
   		this._userService.getUser(this.token, this.identity.email).subscribe(
-			response => {
+			(response:any) => {
 				this.password = response.user.password;
 				if(!response.user){
 					this._router.navigate(['/']);
@@ -61,6 +61,8 @@ export class EditProfileComponent implements OnInit {
 					this.user = {
 						email: response.user.email,
 						password: response.user.password,
+						surnameA:response.user.surnameA,
+						surnameB:response.user.surnameB,
 						typeOfUser: response.user.typeOfUser,
 						initialToken: response.user.initialToken,
 						typeOfOperation: 'update',
@@ -96,7 +98,7 @@ export class EditProfileComponent implements OnInit {
 					this.isHidden = false;
 					//console.log(error.error.message);
 					this.errorMessage = error.error.message;
-					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
 		);
@@ -108,7 +110,8 @@ export class EditProfileComponent implements OnInit {
 			return alert("Rellena todos los campos");
 		}
 		var jsonDP = '{ "createAdministrator": '+this.user.dp1+', "createTUser": '+this.user.dp2+', "updateMe": '+this.user.dp3+', "updateAdministrator": '+this.user.dp4+', "updateTUser": '+this.user.dp5+', "deleteMe": '+this.user.dp6+', "deleteAdministrator": '+this.user.dp7+', "deleteTUser": '+this.user.dp8+', "readMe": '+this.user.dp9+', "readAdministrator": '+this.user.dp10+', "readTUser": '+this.user.dp11+', "loginUser": '+this.user.dp12+' }';
-		var jsonData = {
+		var jsonData:any;
+		jsonData = {
 			email: this.user.email,
 			password: this.user.password,
 			typeOfUser: this.user.typeOfUser,
@@ -129,7 +132,7 @@ export class EditProfileComponent implements OnInit {
 		jsonData.hashX = hashX;
 		delete jsonData.email;
 		this._userService.updateUsers(this.user.email, jsonData).subscribe(
-			response => {
+			(response:any) => {
 				swalWithBootstrapButtons.fire(
 					'¡Datos actualizados!',
 					'Tus datos han sido actualizados correctamente',
@@ -169,7 +172,8 @@ export class EditProfileComponent implements OnInit {
 		.then((result) => {
 			if (result.isConfirmed) {
 				var jsonDP = '{ "createAdministrator": '+this.user.dp1+', "createTUser": '+this.user.dp2+', "updateMe": '+this.user.dp3+', "updateAdministrator": '+this.user.dp4+', "updateTUser": '+this.user.dp5+', "deleteMe": '+this.user.dp6+', "deleteAdministrator": '+this.user.dp7+', "deleteTUser": '+this.user.dp8+', "readMe": '+this.user.dp9+', "readAdministrator": '+this.user.dp10+', "readTUser": '+this.user.dp11+', "loginUser": '+this.user.dp12+' }';
-				var jsonData = {
+				var jsonData:any;
+				jsonData = {
 					email: this.user.email,
 					password: this.user.password,
 					typeOfUser: this.user.typeOfUser,
@@ -190,7 +194,7 @@ export class EditProfileComponent implements OnInit {
 				jsonData.hashX = hashX;
 				delete jsonData.email;
 				this._userService.updateUsers(this.user.email, jsonData).subscribe(
-					response => {
+					(response:any) => {
 						swalWithBootstrapButtons.fire(
 					      '¡Se ha desactivado tu cuenta!',
 					      'Contacta con un desarrollador para reactivarla',

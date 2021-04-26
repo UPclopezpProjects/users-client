@@ -9,14 +9,14 @@ import { Token } from '../../models/token';
   selector: 'app-token',
   templateUrl: './token.component.html',
   providers: [UserService],
-  styleUrls: ['./token.component.css']
+  styleUrls: ['./token.component.scss']
 })
 
 export class TokenComponent implements OnInit {
 	public isHidden: boolean;
 	public token: Token;
 	public errorMessage: any;
-	public email: string;
+	public email: any;
 	public limit: any;
 
 	constructor(
@@ -42,7 +42,7 @@ export class TokenComponent implements OnInit {
 			nameOfOperation: this.token.nameOfOperation
 		}
 		this._userService.checkToken(jsonData).subscribe(
-			response => {
+			(response:any) => {
 				if (response.message == true) {
 					console.log(jsonData.token);
 					//this.rootCreation = false;
