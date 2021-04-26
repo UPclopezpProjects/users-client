@@ -19,7 +19,7 @@ const swalWithBootstrapButtons = Swal.mixin({
   selector: 'app-users-creation',
   templateUrl: './users-creation.component.html',
   providers: [UserService],
-  styleUrls: ['./users-creation.component.css']
+  styleUrls: ['./users-creation.component.scss']
 })
 export class UsersCreationComponent implements OnInit {
 	public token: any;
@@ -40,7 +40,7 @@ export class UsersCreationComponent implements OnInit {
 		this.token = this._userService.getToken();
 		//this.user = new Users('email', 'password', 'typeOfUser', 'initialToken', 'typeOfOperation', 'nameOfOperation', 'addressU', 'hashX', 'status', 'creationDate', 'nameOfUser', 'dp1', 'dp2', 'dp3', 'dp4', 'dp5', 'dp6', 'dp7', 'dp8', 'dp9', 'dp10', 'dp11', 'dp12');
 
-		this.user = new Users('', '', '', this.token, 'create', '', '', '', true, 'xx/xx/xxxx', '', false, false, false, false, false, false, false, false, false, false, false, false);
+		this.user = new Users('', '', '', '', '', this.token, 'create', '', '', '', true, 'xx/xx/xxxx', '', false, false, false, false, false, false, false, false, false, false, false, false);
 		//this.user = new Users('email', 'password', 'typeOfUser', 'initialToken', 'typeOfOperation', 'nameOfOperation', 'addressU', 'hashX', 'status', 'creationDate', 'nameOfUser', 'dp1', 'dp2', 'dp3', 'dp4', 'dp5', 'dp6', 'dp7', 'dp8', 'dp9', 'dp10', 'dp11', 'dp12');
 	}
 
@@ -85,7 +85,8 @@ export class UsersCreationComponent implements OnInit {
 			alert("Se establecieron los permisos por defecto");
 		}
 		var jsonDP = '{ "createAdministrator": '+this.user.dp1+', "createTUser": '+this.user.dp2+', "updateMe": '+this.user.dp3+', "updateAdministrator": '+this.user.dp4+', "updateTUser": '+this.user.dp5+', "deleteMe": '+this.user.dp6+', "deleteAdministrator": '+this.user.dp7+', "deleteTUser": '+this.user.dp8+', "readMe": '+this.user.dp9+', "readAdministrator": '+this.user.dp10+', "readTUser": '+this.user.dp11+', "loginUser": '+this.user.dp12+' }';
-		var jsonData = {
+		var jsonData:any;
+		jsonData = {
 			email: this.user.email,
 			password: this.user.password,
 			typeOfUser: this.user.typeOfUser,
@@ -103,7 +104,7 @@ export class UsersCreationComponent implements OnInit {
 		jsonData.hashX = hashX;
 		//console.log(jsonData);
 		this._userService.createUsers(jsonData).subscribe(
-			response => {
+			(response:any) => {
 				//console.log(response.message);
 				//this.rootCreation = false;
 				//this.menu = true;

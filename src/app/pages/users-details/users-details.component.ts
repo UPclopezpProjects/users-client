@@ -9,7 +9,7 @@ import { Users } from '../../models/users';
   selector: 'app-users-details',
   templateUrl: './users-details.component.html',
   providers: [UserService],
-  styleUrls: ['./users-details.component.css']
+  styleUrls: ['./users-details.component.scss']
 })
 
 export class UsersDetailsComponent implements OnInit {
@@ -32,7 +32,7 @@ export class UsersDetailsComponent implements OnInit {
 		this.isTUser = true;
 		//this.identity = this._userService.getIdentity();
 		//this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
-		this.user = new Users('email', 'password', 'typeOfUser', 'initialToken', 'typeOfOperation', 'nameOfOperation', 'addressU', 'hashX', 'status', 'creationDate', 'nameOfUser', 'dp1', 'dp2', 'dp3', 'dp4', 'dp5', 'dp6', 'dp7', 'dp8', 'dp9', 'dp10', 'dp11', 'dp12');
+		this.user = new Users('email', 'password', 'surnameA', 'surnameB','typeOfUser', 'initialToken', 'typeOfOperation', 'nameOfOperation', 'addressU', 'hashX', 'status', 'creationDate', 'nameOfUser', 'dp1', 'dp2', 'dp3', 'dp4', 'dp5', 'dp6', 'dp7', 'dp8', 'dp9', 'dp10', 'dp11', 'dp12');
 		//this.user = JSON.parse(this.identity);
 		//console.log(this.user);
 		this.token = this._userService.getToken();
@@ -46,7 +46,7 @@ export class UsersDetailsComponent implements OnInit {
 		this._route.params.forEach((params: Params) =>{
 			let id = params['id'];
 			this._userService.getUser(this.token, id).subscribe(
-			response => {
+			(response:any) => {
 				if(!response.user){
 					this._router.navigate(['/']);
 				}else{
@@ -56,7 +56,8 @@ export class UsersDetailsComponent implements OnInit {
 						response.user.status = 'Deshabilitado';
 					}
 					var responseDP = JSON.parse(response.user.dp);
-					var jsonData = {
+					var jsonData:any;
+          jsonData = {
 						email: response.user.email,
 						password: response.user.password,
 						typeOfUser: response.user.typeOfUser,
@@ -94,7 +95,7 @@ export class UsersDetailsComponent implements OnInit {
 				if(errorMessage != null){
 					//console.log("Administrator: "+error.error.message);
 					this.errorMessage = error.error.message;
-					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
 		)

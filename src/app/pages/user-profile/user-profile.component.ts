@@ -32,7 +32,7 @@ export class UserProfileComponent implements OnInit {
 
   	public getUser(){
   		this._userService.getUser(this.token, this.identity.email).subscribe(
-			response => {
+			(response:any) => {
 				if(!response.user){
 					this._router.navigate(['/']);
 				}else{
@@ -40,6 +40,8 @@ export class UserProfileComponent implements OnInit {
 					this.user = {
 						email: response.user.email,
 						password: response.user.password,
+            surnameA: response.user.surnameA,
+            surnameB: response.user.surnameB,
 						typeOfUser: response.user.typeOfUser,
 						initialToken: response.user.initialToken,
 						typeOfOperation: 'read',
@@ -74,7 +76,7 @@ export class UserProfileComponent implements OnInit {
 					this.isHidden = false;
 					//console.log(error.error.message);
 					this.errorMessage = error.error.message;
-					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
 		);

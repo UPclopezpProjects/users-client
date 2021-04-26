@@ -35,7 +35,9 @@
               El email es obligatorio
             </span><br>
             <input class="form-control" #nameOfUser="ngModel" name="nameOfUser" [(ngModel)]="user.nameOfUser" id="nameOfUser" type="text" placeholder="Nombre de usuario" required=""><br>
-            <input class="form-control" #password="ngModel" name="password" [(ngModel)]="user.password" id="password" type="password" placeholder="Contraseña" required>
+            <input class="form-control" #password="ngModel" name="password" [(ngModel)]="user.password" id="password" type="password" placeholder="Contraseña" required><br>
+            <input class="form-control" #surnameA="ngModel" name="surnameA" [(ngModel)]="user.surnameA" id="surnameA" type="text" placeholder="Apellido paterno" required=""><br>
+            <input class="form-control" #surnameB="ngModel" name="surnameB" [(ngModel)]="user.surnameB" id="surnameB" type="text" placeholder="Apellido materno" required="">
             <span *ngIf="!password.valid && password.touched">
               La contraseña es obligatoria
             </span><br>

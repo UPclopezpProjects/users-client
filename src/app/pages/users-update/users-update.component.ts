@@ -19,7 +19,7 @@ const swalWithBootstrapButtons = Swal.mixin({
   selector: 'app-users-update',
   templateUrl: './users-update.component.html',
   providers: [UserService],
-  styleUrls: ['./users-update.component.css']
+  styleUrls: ['./users-update.component.scss']
 })
 export class UsersUpdateComponent implements OnInit {
 	public token: any;
@@ -56,7 +56,7 @@ export class UsersUpdateComponent implements OnInit {
 		this._route.params.forEach((params: Params) =>{
 			let id = params['id'];
 			this._userService.getUser(this.token, id).subscribe(
-			response => {
+			(response:any) => {
 				this.password = response.user.password;
 				if(!response.user){
 					this._router.navigate(['/']);
@@ -72,7 +72,8 @@ export class UsersUpdateComponent implements OnInit {
 						this.nameOfOperation = null;
 					}
 					var responseDP = JSON.parse(response.user.dp);
-					var jsonData = {
+					var jsonData:any;
+					jsonData = {
 						email: response.user.email,
 						password: response.user.password,
 						typeOfUser: response.user.typeOfUser,
@@ -111,7 +112,7 @@ export class UsersUpdateComponent implements OnInit {
 				if(errorMessage != null){
 					//console.log("Administrator: "+error.error.message);
 					this.errorMessage = error.error.message;
-					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
 		)
@@ -129,7 +130,8 @@ export class UsersUpdateComponent implements OnInit {
 			return alert("Rellena todos los campos");
 		}
 		var jsonDP = '{ "createAdministrator": '+this.user.dp1+', "createTUser": '+this.user.dp2+', "updateMe": '+this.user.dp3+', "updateAdministrator": '+this.user.dp4+', "updateTUser": '+this.user.dp5+', "deleteMe": '+this.user.dp6+', "deleteAdministrator": '+this.user.dp7+', "deleteTUser": '+this.user.dp8+', "readMe": '+this.user.dp9+', "readAdministrator": '+this.user.dp10+', "readTUser": '+this.user.dp11+', "loginUser": '+this.user.dp12+' }';
-		var jsonData = {
+		var jsonData:any;
+		jsonData = {
 			email: this.user.email,
 			password: this.user.password,
 			typeOfUser: this.user.typeOfUser,
@@ -152,7 +154,7 @@ export class UsersUpdateComponent implements OnInit {
 		jsonData.hashX = hashX;
 		jsonData.email = '';
 		this._userService.updateUsers(this.user.email, jsonData).subscribe(
-			response => {
+			(response:any) => {
 				swalWithBootstrapButtons.fire(
 					'¡Registro actualizado!',
 					'El registro ha sido actualizado correctamente',
@@ -185,6 +187,3 @@ export class UsersUpdateComponent implements OnInit {
 		);
 	}
 }
-
-
-
