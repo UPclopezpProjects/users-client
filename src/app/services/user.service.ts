@@ -10,6 +10,7 @@ export class UserService{
 	public token: any;
 	public session: any;
 	public user: any;
+	public company: any;
 	public url: string;
 
 	constructor(private _http: HttpClient){
@@ -122,6 +123,16 @@ export class UserService{
 		return this.token;
 	}
 
+	getCompany(){
+		let company = localStorage.getItem('nameOfCompany');
+		if(company != "undefined"){
+			this.company = company;
+		}else{
+			this.company = null;
+		}
+		return this.company;
+	}
+
 	getSession(){
 		let session = localStorage.getItem('session');
 		if(session != "undefined"){
@@ -185,73 +196,127 @@ export class UserService{
 		return this._http.get(this.url+'getData');
 	}
 
-	merchantData(merchant, gethash = null){
+	merchantsCompany(data, gethash = null){
 		if(gethash != null){
-			merchant.gethash = gethash;
+			data.gethash = gethash;
 		}
-		let json = JSON.stringify(merchant);
+		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
 			.set('Content-Type', 'application/json');
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 
-		return this._http.post(this.url+'merchantsData', params, {headers: headers});
+		return this._http.post(this.url+'merchantsCompany', params, {headers: headers});
 			//}.pipe(map(res => res.json()));
 			//.pipe(map(data => new user(data)));
 	}
 
-	carrierData(merchant, gethash = null){
+	getCompanyM(data, gethash = null){
 		if(gethash != null){
-			merchant.gethash = gethash;
+			data.gethash = gethash;
 		}
-		let json = JSON.stringify(merchant);
+		let json = JSON.stringify(data);
 		let params = json;
-		let token = this.getToken();
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json')
-			.set('Authorization', token);
+			.set('Content-Type', 'application/json');
+		return this._http.post(this.url+'getCompanyM', params, {headers: headers});
+	}
+
+	merchantData(formData){
+		return this._http.post(this.url+'acopiosData', formData);
+	}
+
+	carriersCompany(data, gethash = null){
+		if(gethash != null){
+			data.gethash = gethash;
+		}
+		let json = JSON.stringify(data);
+		let params = json;
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json');
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 
-		return this._http.post(this.url+'carriersData', params, {headers: headers});
+		return this._http.post(this.url+'carriersCompany', params, {headers: headers});
 			//}.pipe(map(res => res.json()));
 			//.pipe(map(data => new user(data)));
 	}
 
-	acopioData(merchant, gethash = null){
+	getCompanyC(data, gethash = null){
 		if(gethash != null){
-			merchant.gethash = gethash;
+			data.gethash = gethash;
 		}
-		let json = JSON.stringify(merchant);
+		let json = JSON.stringify(data);
 		let params = json;
-		let token = this.getToken();
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json')
-			.set('Authorization', token);
+			.set('Content-Type', 'application/json');
+		return this._http.post(this.url+'getCompanyC', params, {headers: headers});
+	}
+
+	carrierData(formData){
+		return this._http.post(this.url+'acopiosData', formData);
+	}
+
+	acopiosCompany(data, gethash = null){
+		if(gethash != null){
+			data.gethash = gethash;
+		}
+		let json = JSON.stringify(data);
+		let params = json;
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json');
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 
-		return this._http.post(this.url+'acopiosData', params, {headers: headers});
+		return this._http.post(this.url+'acopiosCompany', params, {headers: headers});
 			//}.pipe(map(res => res.json()));
 			//.pipe(map(data => new user(data)));
 	}
 
-	productorData(merchant, gethash = null){
+	getCompanyA(data, gethash = null){
 		if(gethash != null){
-			merchant.gethash = gethash;
+			data.gethash = gethash;
 		}
-		let json = JSON.stringify(merchant);
+		let json = JSON.stringify(data);
 		let params = json;
-		let token = this.getToken();
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json')
-			.set('Authorization', token);
+			.set('Content-Type', 'application/json');
+		return this._http.post(this.url+'getCompanyA', params, {headers: headers});
+	}
+
+	acopioData(formData){
+		return this._http.post(this.url+'acopiosData', formData);
+	}
+
+	productorsCompany(data, gethash = null){
+		if(gethash != null){
+			data.gethash = gethash;
+		}
+		let json = JSON.stringify(data);
+		let params = json;
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json');
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 
-		return this._http.post(this.url+'productorsData', params, {headers: headers});
+		return this._http.post(this.url+'productorsCompany', params, {headers: headers});
 			//}.pipe(map(res => res.json()));
 			//.pipe(map(data => new user(data)));
+	}
+
+	getCompanyP(data, gethash = null){
+		if(gethash != null){
+			data.gethash = gethash;
+		}
+		let json = JSON.stringify(data);
+		let params = json;
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json');
+		return this._http.post(this.url+'getCompanyP', params, {headers: headers});
+	}
+
+	productorData(formData){
+		return this._http.post(this.url+'acopiosData', formData);
 	}
 }

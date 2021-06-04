@@ -26,6 +26,7 @@ import { MerchantDataComponent } from './pages/merchant-data/merchant-data.compo
 import { MerchantHomeComponent } from './pages/merchant-home/merchant-home.component';
 import { MerchantAboutComponent } from './pages/merchant-about/merchant-about.component';
 import { MerchantDetailComponent } from './pages/merchant-detail/merchant-detail.component';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { MerchantDetailComponent } from './pages/merchant-detail/merchant-detail
     ComponentsModule,
     NgbModule,
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxQRCodeModule
   ],
   declarations: [
     AppComponent,

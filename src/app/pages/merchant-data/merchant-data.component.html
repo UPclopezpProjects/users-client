@@ -3,7 +3,7 @@
 		<div class="section-title">
 			<h2>Datos generales</h2>
 		</div>
-		<form (ngSubmit)="onSubmit()">
+		<form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
 			<div *ngIf="isMerchant">
 				<div class="row">
 					<div class="col">
@@ -31,14 +31,6 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<label for="description">Description:</label>
-						<input class="form-control" #description="ngModel" name="description" [(ngModel)]="productor.description" id="description" type="text" placeholder="Describe el producto" required="">
-					</div>
-					<div class="col">
-						<label for="image">Imagen:</label>
-						<input class="form-control" #image="ngModel" name="image" [(ngModel)]="productor.image" id="image" type="text" placeholder="IMAGEN" required="">
-					</div>
-					<div class="col">
 						<label for="documentation">Documentation:</label>
 						<input class="form-control" #documentation="ngModel" name="documentation" [(ngModel)]="productor.documentation" id="documentation" type="text" placeholder="Documentos que garantizan la calidad de tu producto" required="">
 					</div>
@@ -46,7 +38,7 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<label for="fid">Nombre del proveedor:</label>
+					<label for="fid">Dato anterior:</label>
 					<select  class="form-control" #fid="ngModel" name="fid" [(ngModel)]="tuser.fid" id="fid" (ngModelChange)="onChange()">
 						<option value="null">Ninguno</option>
 						<option value="{{productor._id}}" *ngFor="let productor of dataP">{{productor.name}}</option>
@@ -62,9 +54,13 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<label for="name">Nombre de la empresa:</label>
-					<input class="form-control" #name="ngModel" name="name" [(ngModel)]="tuser.name" id="name" type="text" placeholder="Ingresa el nombre de tu empresa" required="">
+					<label for="name">Nombre del paquete:</label>
+					<input class="form-control" #name="ngModel" name="name" [(ngModel)]="tuser.name" id="name" type="text" placeholder="Ingresa el nombre del paquete" required="">
 					<!--<input class="form-control" #image="ngModel" name="image" [(ngModel)]="merchant.image" id="image" type="file" required="" (change)="fileChangeEvent($event)">-->
+				</div>
+				<div class="col">
+					<label for="image">Imagen:</label>
+					<input (change)="fileChange($event)" class="form-control" #image="ngModel" name="image" [(ngModel)]="tuser.image" id="image" type="file" placeholder="IMAGEN" required="">
 				</div>
 				<div class="col">
 					<label for="permitions">Permisos:</label>
@@ -72,6 +68,10 @@
 				</div>
 			</div>
 			<div class="row" *ngIf="!isHidden"> <!--Show in dev -->
+				<div class="col">
+					<label for="description">Description:</label>
+					<input class="form-control" #description="ngModel" name="description" [(ngModel)]="tuser.description" id="description" type="text" placeholder="Describe el producto" required="">
+				</div>
 				<div class="col">
 					<label for="currentStage">Etapa actual:</label>
 					<input class="form-control" #currentStage="ngModel" name="currentStage" [(ngModel)]="tuser.currentStage" id="currentStage" type="text" placeholder="Etapa actual" required="" disabled>
@@ -93,6 +93,15 @@
 				</div>
 			</div>-->
 			<br>
+			<div *ngIf="QR" style="text-align:center">
+					QR GENERADO:
+					<ngx-qrcode
+					[elementType]="elementType"
+					[value]="value"
+					cssClass="aclass"
+					errorCorrectionLevel="L">
+					</ngx-qrcode>
+			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-success btn-lg">Enviar</button>
 			</div>
