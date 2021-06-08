@@ -2,7 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Users } from '../../models/users';
-
+import Swal from 'sweetalert2';
+const swalWithBootstrapButtons = Swal.mixin({
+	customClass: {
+		confirmButton: 'btn btn-success',
+		cancelButton: 'btn btn-danger'
+	},
+	buttonsStyling: false
+})
 
 @Component({
   selector: 'app-merchant-about',
@@ -18,6 +25,7 @@ export class MerchantAboutComponent implements OnInit {
 	public errorMessage;
 	public token;
   public isHidden: boolean;
+  public nameOfCompany;
 
 	constructor(
     private _userService: UserService,
@@ -25,11 +33,21 @@ export class MerchantAboutComponent implements OnInit {
     private _router: Router
   ) {
     this.identity = JSON.parse(this._userService.getIdentity());
+    this.user = this.identity;
 		this.token = this._userService.getToken();
     this.isHidden = true;
+    this.nameOfCompany = this._userService.getCompany();
   }
 
   ngOnInit() {
+    if(this.nameOfCompany == null || this.nameOfCompany == '""'){
+      swalWithBootstrapButtons.fire(
+        '¡Alto!',
+        'Necesitas proporcionar un nombre para tu empresa',
+        'warning'
+      )
+      this.nameOfCompany = 'NOMBRE DE EMPRESA SIN COMPROBAR';
+    }
     this.getUser();
   }
 
@@ -50,10 +68,10 @@ export class MerchantAboutComponent implements OnInit {
 		  			typeOfOperation: 'read',
 		  			nameOfOperation: 'readMe',
 		  			addressU: this.identity.addressU,
+            hashX: this.identity.hashX,
+            status: this.identity.status,
+            creationDate: this.identity.creationDate,
 		  			nameOfUser: this.identity.nameOfUser,
-		  			creationDate: this.identity.creationDate,
-		  			status: this.identity.status,
-		  			hashX: this.identity.hashX,
 		  			dp1: responseDP.createAdministrator,
 		  			dp2: responseDP.createTUser,
 		  			dp3: responseDP.updateMe,
@@ -65,7 +83,7 @@ export class MerchantAboutComponent implements OnInit {
 		  			dp9: responseDP.readMe,
 		  			dp10: responseDP.readAdministrator,
 		  			dp11: responseDP.readTUser,
-		  			dp12: responseDP.loginUser,
+		  			dp12: responseDP.loginUser
 		  		};
 		  		this.user = jsonData;
         }

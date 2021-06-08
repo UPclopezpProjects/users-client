@@ -3,8 +3,13 @@
 		<h1>BIENVENIDO</h1>
 		<!--<p>Soy <span class="typed" data-typed-items="el número 1, el mejor, genial, comerciante"></span></p>-->
 	</div>
+	<form (ngSubmit)="onSubmit()" *ngIf="isHidden">
+		<div class="row">
+			<div class="col">
+				<label class="text-orange" for="nameOfCompany">Ingresa el nombre de tu empresa para continuar con su registro:</label>
+				<input class="form-control" #nameOfCompany="ngModel" name="nameOfCompany" [(ngModel)]="tuser.nameOfCompany" id="nameOfCompany" type="text" placeholder="Ingresa el nombre de tu empresa" required="">
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary btn-lg">Confirmar</button>
+	</form>
 </section><!-- End Hero -->
-
-
-
-
