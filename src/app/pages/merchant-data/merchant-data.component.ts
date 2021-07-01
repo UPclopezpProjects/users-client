@@ -245,10 +245,6 @@ export class MerchantDataComponent implements OnInit {
 				this.dataM = response.merchant;
 				console.log(this.dataP, this.dataA, this.dataC, this.dataM);
 			});
-		/*this._userService.requestDataFromMultipleSources().subscribe(responseList => {
-			this.data = responseList;
-			console.log(this.data);
-		});*/
 		if(this.users.typeOfUser == 'Merchant'){
 			this.isMerchant = true;
 			this.isCarrier = false;
