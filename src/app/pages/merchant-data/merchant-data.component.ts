@@ -120,7 +120,7 @@ export class MerchantDataComponent implements OnInit {
 		formData.append('description', this.tuser.description);
 
 		if(this.users.typeOfUser == 'Merchant'){
-			jsonData.code = this.merchant.code;
+			formData.append('code', this.merchant.code);
 			this._userService.merchantData(formData).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
@@ -200,9 +200,9 @@ export class MerchantDataComponent implements OnInit {
 				}
 			)
 		}else if(this.users.typeOfUser == 'Productor'){
-			jsonData.harvestDate = this.productor.harvestDate;
-			jsonData.caducationDate = this.productor.caducationDate;
-			jsonData.documentation = this.productor.documentation;
+			formData.append('harvestDate', this.productor.harvestDate);
+			formData.append('caducationDate', this.productor.caducationDate);
+			formData.append('documentation', this.productor.documentation);
 			this._userService.productorData(formData).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
@@ -243,12 +243,8 @@ export class MerchantDataComponent implements OnInit {
 				this.dataA = response.acopio;
 				this.dataC = response.carrier;
 				this.dataM = response.merchant;
-				//console.log(this.dataP, this.dataA, this.dataC, this.dataM);
+				console.log(this.dataP, this.dataA, this.dataC, this.dataM);
 			});
-		/*this._userService.requestDataFromMultipleSources().subscribe(responseList => {
-			this.data = responseList;
-			console.log(this.data);
-		});*/
 		if(this.users.typeOfUser == 'Merchant'){
 			this.isMerchant = true;
 			this.isCarrier = false;

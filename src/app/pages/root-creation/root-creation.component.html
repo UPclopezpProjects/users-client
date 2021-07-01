@@ -4,7 +4,7 @@
     <div class="col-lg-5 col-md-7">
       <div class="card bg-secondary shadow border-0">
         <div class="card-header bg-transparent pb-5">
-          <div class="text-muted text-center mt-2 mb-3"><h1>Registro</h1></div>
+          <div class="text-muted text-center mt-2 mb-3"><h1>Sign up</h1></div>
           <!--
           <div class="btn-wrapper text-center">
             <a href="javascript:void(0)" class="btn btn-neutral btn-icon">
@@ -30,14 +30,14 @@
                 <strong>¡Error!</strong> {{ errorMessage }}
               </div>
             </div>-->
-            <input class="form-control" #email="ngModel" name="email" [(ngModel)]="user.email" id="email" type="email" placeholder="Correo" required>
+            <input class="form-control" #email="ngModel" name="email" [(ngModel)]="user.email" id="email" type="email" placeholder="Email" required>
             <span *ngIf="!email.valid && email.touched">
               El email es obligatorio
             </span><br>
-            <input class="form-control" #nameOfUser="ngModel" name="nameOfUser" [(ngModel)]="user.nameOfUser" id="nameOfUser" type="text" placeholder="Nombre de usuario" required=""><br>
-            <input class="form-control" #password="ngModel" name="password" [(ngModel)]="user.password" id="password" type="password" placeholder="Contraseña" required><br>
-            <input class="form-control" #surnameA="ngModel" name="surnameA" [(ngModel)]="user.surnameA" id="surnameA" type="text" placeholder="Apellido paterno" required=""><br>
-            <input class="form-control" #surnameB="ngModel" name="surnameB" [(ngModel)]="user.surnameB" id="surnameB" type="text" placeholder="Apellido materno" required="">
+            <input class="form-control" #nameOfUser="ngModel" name="nameOfUser" [(ngModel)]="user.nameOfUser" id="nameOfUser" type="text" placeholder="Name of user" required=""><br>
+            <input class="form-control" #password="ngModel" name="password" [(ngModel)]="user.password" id="password" type="password" placeholder="Password" required><br>
+            <input class="form-control" #surnameA="ngModel" name="surnameA" [(ngModel)]="user.surnameA" id="surnameA" type="text" placeholder="First name" required=""><br>
+            <input class="form-control" #surnameB="ngModel" name="surnameB" [(ngModel)]="user.surnameB" id="surnameB" type="text" placeholder="Last name" required="">
             <span *ngIf="!password.valid && password.touched">
               La contraseña es obligatoria
             </span><br>
@@ -45,13 +45,14 @@
             <p *ngIf="!isHidden">Token:</p><input #initialToken="ngModel" name="initialToken" [(ngModel)]="user.initialToken" id="initialToken" type="text" placeholder="Token" required="" *ngIf="!isHidden">
             <p *ngIf="!isHidden">Tipo de operación:</p><input #typeOfOperation="ngModel" name="typeOfOperation" [(ngModel)]="user.typeOfOperation" id="typeOfOperation" type="text" placeholder="Tipo de operación" required="" disabled="true" *ngIf="!isHidden">
             <p *ngIf="!isHidden">Nombre de operación:</p><input #nameOfOperation="ngModel" name="nameOfOperation" [(ngModel)]="user.nameOfOperation" id="nameOfOperation" type="text" placeholder="Nombre de operación" required="" disabled="true" *ngIf="!isHidden">
-            <input class="form-control" #addressU="ngModel" name="addressU" [(ngModel)]="user.addressU" id="addressU" type="text" placeholder="Llave  " required="" *ngIf="isHidden">
+            <input class="form-control" name="gas" type="text" placeholder="Gas" required=""><br>
+            <input class="form-control" #addressU="ngModel" name="addressU" [(ngModel)]="user.addressU" id="addressU" type="text" placeholder="Address" required="" *ngIf="isHidden">
             <p *ngIf="!isHidden">HashX:</p><input #hashX="ngModel" name="hashX" [(ngModel)]="user.hashX" id="hashX" type="text" placeholder="HashX" required="" disabled="true" *ngIf="!isHidden">
             <p *ngIf="!isHidden">Estado:</p><input class="form-control" #status="ngModel" name="status" [(ngModel)]="user.status" id="status" type="text" placeholder="Estado" required="" *ngIf="!isHidden">
             <p *ngIf="!isHidden">Fecha de creación:</p><input class="form-control" #creationDate="ngModel" name="creationDate" [(ngModel)]="user.creationDate" id="creationDate" type="text" placeholder="Fecha de creación" required="" *ngIf="!isHidden">
             <p *ngIf="!isHidden">DP:</p><input #dp="ngModel" name="dp" [(ngModel)]="user.dp" id="dp" type="text" placeholder="dp" required="" disabled="true" *ngIf="!isHidden">
             <div class="text-center">
-              <button class="btn btn-success mt-4" type="submit">Registrar</button>
+              <button class="btn btn-success mt-4" type="submit">Sign up</button>
             </div>
           </form>
         </div>
