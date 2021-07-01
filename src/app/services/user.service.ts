@@ -224,7 +224,7 @@ export class UserService{
 	}
 
 	merchantData(formData){
-		return this._http.post(this.url+'acopiosData', formData);
+		return this._http.post(this.url+'merchantsData', formData);
 	}
 
 	carriersCompany(data, gethash = null){
@@ -255,7 +255,7 @@ export class UserService{
 	}
 
 	carrierData(formData){
-		return this._http.post(this.url+'acopiosData', formData);
+		return this._http.post(this.url+'carriersData', formData);
 	}
 
 	acopiosCompany(data, gethash = null){
@@ -317,6 +317,6 @@ export class UserService{
 	}
 
 	productorData(formData){
-		return this._http.post(this.url+'acopiosData', formData);
+		return this._http.post(this.url+'productorsData', formData);
 	}
 }
