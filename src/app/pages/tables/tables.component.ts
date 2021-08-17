@@ -91,14 +91,14 @@ export class TablesComponent implements OnInit {
 						console.log(response.users);
 
 						this.users = response.users;
-	                    for(var user of response.users){
-	                    	if(user.status == 'true'){
-	                    		user.status = 'Habilitado';
-	                    	}else if(user.status == 'false'){
-	                    		user.status = 'Deshabilitado';
-	                    	}
-	                    	this.usersView.push(user);
-	                    }
+						for(var user of response.users){
+							if(user.status == 'true'){
+								user.status = 'Habilitado';
+							}else if(user.status == 'false'){
+								user.status = 'Deshabilitado';
+							}
+							this.usersView.push(user);
+						}
 					}
 				},
 				error => {

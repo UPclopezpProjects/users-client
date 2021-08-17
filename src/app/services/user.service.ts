@@ -319,4 +319,19 @@ export class UserService{
 	productorData(formData){
 		return this._http.post(this.url+'productorsData', formData);
 	}
+
+	getHistory(token, nameOfCompany: string, typeOfUser: string){
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
+		return this._http.get(this.url+'getHistory?nameOfCompany='+nameOfCompany+'&typeOfUser='+typeOfUser, {headers: headers});
+	}
+
+	searchData(data){
+		let json = JSON.stringify(data);
+		let params = json;
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json');
+		return this._http.post(this.url+'traceability', params, {headers: headers});
+	}
 }

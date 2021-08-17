@@ -1,6 +1,7 @@
 export class TUsers{
 	constructor(
 		public fid: string,
+		public code: string,
 		public ubication: string,
 		public name: string,
 		public previousStage: string,

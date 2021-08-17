@@ -3,18 +3,76 @@
 		<div class="section-title">
 			<h2>Datos generales</h2>
 		</div>
+		<div class="input-append">
+			<input id="search" type="text" class="input-medium search-query" name="s" placeholder="Código a buscar" value="">
+			<button (click)="searchData()" class="btn btn-info"><i class="fa fa-search"></i></button>
+			<button (click)="deleteData()" class="btn btn-danger" *ngIf="data"><i class="fa fa-trash" *ngIf="data"></i></button>
+		</div>
 		<form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-			<div *ngIf="isMerchant">
-				<div class="row">
-					<div class="col">
-						<label for="code">Code:</label>
-						<input class="form-control" #code="ngModel" name="code" [(ngModel)]="merchant.code" id="code" type="text" placeholder="Ingresa el QR" required="">
-					</div>
+			<div class="row">
+				<div class="col">
+					<label for="fid">Nombre del eslabón anterior:</label>
+					<input class="form-control" #fid="ngModel" name="fid" [(ngModel)]="tuser.fid" id="fid" type="text" placeholder="Nombre de la etapa anterior" required="" disabled>
+
+					<!--<select  class="form-control" #fid="ngModel" name="fid" [(ngModel)]="tuser.fid" id="fid" (ngModelChange)="onChange()">
+						<option value="null">Ninguno</option>
+						<option value="{{productor._id}}" *ngFor="let productor of dataP">{{productor.name}}</option>
+						<option value="{{acopio._id}}" *ngFor="let acopio of dataA">{{acopio.name}}</option>
+						<option value="{{carrier._id}}" *ngFor="let carrier of dataC">{{carrier.name}}</option>
+						<option value="{{merchant._id}}" *ngFor="let merchant of dataM">{{merchant.name}}</option>
+					</select>-->
 				</div>
 				<div class="col">
+					<label for="previousStage">Eslabón anterior:</label>
+					<input class="form-control" #previousStage="ngModel" name="previousStage" [(ngModel)]="tuser.previousStage" id="previousStage" type="text" placeholder="Etapa anterior" required="" disabled>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col">
+					<label for="name">Nombre del eslabón actual:</label>
+					<input class="form-control" #name="ngModel" name="name" [(ngModel)]="tuser.name" id="name" type="text" placeholder="Ingresa el nombre del paquete" required="">
+					<!--<input class="form-control" #image="ngModel" name="image" [(ngModel)]="merchant.image" id="image" type="file" required="" (change)="fileChangeEvent($event)">-->
+				</div>
+				<div class="col">
+					<label for="currentStage">Eslabón actual:</label>
+					<input class="form-control" #currentStage="ngModel" name="currentStage" [(ngModel)]="tuser.currentStage" id="currentStage" type="text" placeholder="Etapa actual" required="" disabled>
+				</div>
+			</div>
+			<div *ngIf="isMerchant">
+			</div>
 			<div *ngIf="isCarrier">
+				<div class="row">
+					<div class="col">
+						<label for="driverName">Nombre del conductor:</label>
+						<input class="form-control" #driverName="ngModel" name="driverName" [(ngModel)]="carrier.driverName" id="driverName" type="text" placeholder="Ingresa el nombre del conductor de la unidad" required="">
+					</div>
+					<div class="col">
+						<label for="origin">Origen:</label>
+						<input class="form-control" #origin="ngModel" name="origin" [(ngModel)]="carrier.origin" id="origin" type="text" placeholder="" required="" >
+					</div>
+					<div class="col">
+						<label for="destination">Destino:</label>
+						<input class="form-control" #destination="ngModel" name="destination" [(ngModel)]="carrier.destination" id="destination" type="text" placeholder="" required="" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<label for="plates">Placas del vehículo:</label>
+						<input class="form-control" #plates="ngModel" name="plates" [(ngModel)]="carrier.plates" id="plates" type="text" placeholder="Ingresa el número de placas del vehículo" required="">
+					</div>
+					<div class="col">
+						<label for="productPhotos">Fotos del producto:</label>
+						<input (change)="fileChangeProduct($event)" class="form-control" #productPhotos="ngModel" name="productPhotos" [(ngModel)]="carrier.productPhotos" id="productPhotos" type="file" placeholder="IMAGEN" required="">
+					</div>
+					<div class="col">
+						<label for="vehiclePhotos">Fotos del vehículo:</label>
+						<input (change)="fileChangeVehicle($event)" class="form-control" #vehiclePhotos="ngModel" name="vehiclePhotos" [(ngModel)]="carrier.vehiclePhotos" id="vehiclePhotos" type="file" placeholder="IMAGEN" required="">
+					</div>
+					<div class="col">
+						<label for="tracking">ID de rastreo:</label>
+						<input class="form-control" #tracking="ngModel" name="tracking" [(ngModel)]="carrier.tracking" id="tracking" type="text" placeholder="" required="" >
+					</div>
+				</div>
 			</div>
 			<div *ngIf="isAcopio">
 			</div>
@@ -28,8 +86,6 @@
 						<label for="caducationDate">Fecha de caducidad:</label>
 						<input class="form-control" #caducationDate="ngModel" name="caducationDate" [(ngModel)]="productor.caducationDate" id="caducationDate" type="text" placeholder="Ingresa la fecha de caducidad del producto o productos" required="">
 					</div>
-				</div>
-				<div class="row">
 					<div class="col">
 						<label for="documentation">Documentation:</label>
 						<input class="form-control" #documentation="ngModel" name="documentation" [(ngModel)]="productor.documentation" id="documentation" type="text" placeholder="Documentos que garantizan la calidad de tu producto" required="">
@@ -38,33 +94,16 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<label for="fid">Dato anterior:</label>
-					<select  class="form-control" #fid="ngModel" name="fid" [(ngModel)]="tuser.fid" id="fid" (ngModelChange)="onChange()">
-						<option value="null">Ninguno</option>
-						<option value="{{productor._id}}" *ngFor="let productor of dataP">{{productor.name}}</option>
-						<option value="{{acopio._id}}" *ngFor="let acopio of dataA">{{acopio.name}}</option>
-						<option value="{{carrier._id}}" *ngFor="let carrier of dataC">{{carrier.name}}</option>
-						<option value="{{merchant._id}}" *ngFor="let merchant of dataM">{{merchant.name}}</option>
-					</select>
-				</div>
-				<div class="col">
-					<label for="ubication">Ubicación:</label>
-					<input class="form-control" #ubication="ngModel" name="ubication" [(ngModel)]="tuser.ubication" id="ubication" type="text" placeholder="Ubicación" required="">
-				</div>
-			</div>
-			<div class="row">
-				<div class="col">
-					<label for="name">Nombre del paquete:</label>
-					<input class="form-control" #name="ngModel" name="name" [(ngModel)]="tuser.name" id="name" type="text" placeholder="Ingresa el nombre del paquete" required="">
-					<!--<input class="form-control" #image="ngModel" name="image" [(ngModel)]="merchant.image" id="image" type="file" required="" (change)="fileChangeEvent($event)">-->
+					<label for="code">Code:</label>
+					<input class="form-control" #code="ngModel" name="code" [(ngModel)]="tuser.code" id="code" type="text" placeholder="Ingresa el nuevo código" required="" disabled>
 				</div>
 				<div class="col">
 					<label for="image">Imagen:</label>
-					<input (change)="fileChange($event)" class="form-control" #image="ngModel" name="image" [(ngModel)]="tuser.image" id="image" type="file" placeholder="IMAGEN" required="">
+					<input (change)="fileChangeImage($event)" class="form-control" #image="ngModel" name="image" [(ngModel)]="tuser.image" id="image" type="file" placeholder="IMAGEN" required="">
 				</div>
 				<div class="col">
-					<label for="permitions">Permisos:</label>
-					<input class="form-control" #permitions="ngModel" name="permitions" [(ngModel)]="tuser.permitions" id="permitions" type="text" placeholder="Habilitados" required="" disabled>
+					<label for="ubication">Ubicación:</label>
+					<input class="form-control" #ubication="ngModel" name="ubication" [(ngModel)]="tuser.ubication" id="ubication" type="text" placeholder="Ubicación" required="" disabled>
 				</div>
 			</div>
 			<div class="row" *ngIf="!isHidden"> <!--Show in dev -->
@@ -73,25 +112,19 @@
 					<input class="form-control" #description="ngModel" name="description" [(ngModel)]="tuser.description" id="description" type="text" placeholder="Describe el producto" required="">
 				</div>
 				<div class="col">
-					<label for="currentStage">Etapa actual:</label>
-					<input class="form-control" #currentStage="ngModel" name="currentStage" [(ngModel)]="tuser.currentStage" id="currentStage" type="text" placeholder="Etapa actual" required="" disabled>
-				</div>
-				<div class="col">
-					<label for="previousStage">Etapa anterior:</label>
-					<input class="form-control" #previousStage="ngModel" name="previousStage" [(ngModel)]="tuser.previousStage" id="previousStage" type="text" placeholder="Etapa anterior" required="" disabled>
+					<label for="permitions">Permisos:</label>
+					<input class="form-control" #permitions="ngModel" name="permitions" [(ngModel)]="tuser.permitions" id="permitions" type="text" placeholder="Habilitados" required="" disabled>
 				</div>
 			</div>
-			<!--<div class="row">
+			<br>
+			<div class="row">
 				<div class="col">
-					<label for="mp">Maps:</label>
-					<div id="floating-panel">
-				      <a class="btn btn-danger" (click)="deleteMarkers()"><label class="text-white">Eliminar marcas</label></a>
-				      <a class="btn btn-danger" (click)="trazar()"><label class="text-white">Trazar marcas</label></a>
-				    </div>
-				    <div id="directions-panel"></div>
-					<div id="map-canvas" class="map-canvas" data-lat="19.360575957611847" data-lng="-99.11245350634144" style="height: 600px;"></div>
+					<div id="floating-panel" *ngIf="press">
+						<button class="btn btn-warning"(click)="deleteMarkers()" type="button" name="button">Eliminar marca</button>
+				  </div>
+					<br *ngIf="press"><div id="googleMap" style="width:100%;height:400px;"></div>
 				</div>
-			</div>-->
+			</div>
 			<br>
 			<div *ngIf="QR" style="text-align:center">
 					QR GENERADO:

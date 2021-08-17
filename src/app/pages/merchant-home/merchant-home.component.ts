@@ -36,7 +36,7 @@ export class MerchantHomeComponent implements OnInit {
     this.identity = this._userService.getIdentity();
     this.nameOfCompany = this._userService.getCompany();
     this.users = JSON.parse(this.identity);
-    this.tuser = new TUsers('null', '', '', 'null', this.users.typeOfUser, '', null, '');
+    this.tuser = new TUsers('null', '', '', '', 'null', this.users.typeOfUser, '', null, '');
   }
 
   ngOnInit(): void {

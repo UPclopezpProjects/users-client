@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule  } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -27,6 +27,7 @@ import { MerchantHomeComponent } from './pages/merchant-home/merchant-home.compo
 import { MerchantAboutComponent } from './pages/merchant-about/merchant-about.component';
 import { MerchantDetailComponent } from './pages/merchant-detail/merchant-detail.component';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { HistoryComponent } from './pages/history/history.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
     NgbModule,
     RouterModule,
     AppRoutingModule,
-    NgxQRCodeModule
+    NgxQRCodeModule,
+    HttpClientJsonpModule
   ],
   declarations: [
     AppComponent,
@@ -57,6 +59,7 @@ import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
     MerchantHomeComponent,
     MerchantAboutComponent,
     MerchantDetailComponent,
+    HistoryComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
