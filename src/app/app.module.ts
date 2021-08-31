@@ -29,6 +29,9 @@ import { MerchantDetailComponent } from './pages/merchant-detail/merchant-detail
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import { HistoryComponent } from './pages/history/history.component';
 
+import { MatTableModule } from '@angular/material/table'
+
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -39,7 +42,8 @@ import { HistoryComponent } from './pages/history/history.component';
     RouterModule,
     AppRoutingModule,
     NgxQRCodeModule,
-    HttpClientJsonpModule
+    HttpClientJsonpModule,
+    MatTableModule
   ],
   declarations: [
     AppComponent,

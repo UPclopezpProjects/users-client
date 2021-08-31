@@ -52,7 +52,7 @@ export class UserService{
 		let params = json;
 		let token = this.getToken();
 		let session = this.getSession();
- 		console.log(token, session);
+ 		//console.log(token, session);
 		let headers = new HttpHeaders()
 			.set('Content-Type', 'application/json')
 			.set('Authorization', token)
@@ -223,8 +223,12 @@ export class UserService{
 		return this._http.post(this.url+'getCompanyM', params, {headers: headers});
 	}
 
-	merchantData(formData){
-		return this._http.post(this.url+'merchantsData', formData);
+	merchantDataIn(formData){
+		return this._http.post(this.url+'merchantsDataIn', formData);
+	}
+
+	merchantDataOut(formData){
+		return this._http.post(this.url+'merchantsDataOut', formData);
 	}
 
 	carriersCompany(data, gethash = null){
@@ -285,8 +289,20 @@ export class UserService{
 		return this._http.post(this.url+'getCompanyA', params, {headers: headers});
 	}
 
-	acopioData(formData){
-		return this._http.post(this.url+'acopiosData', formData);
+	acopioDataIn(formData){
+		return this._http.post(this.url+'acopiosDataIn', formData);
+	}
+
+	acopioDataOut(formData){
+		return this._http.post(this.url+'acopiosDataOut', formData);
+	}
+
+	acopiosDataUpdate(data){
+		let json = JSON.stringify(data);
+		let params = json;
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json');
+		return this._http.put(this.url+'acopiosDataUpdate', params, {headers: headers});
 	}
 
 	productorsCompany(data, gethash = null){
@@ -325,6 +341,14 @@ export class UserService{
 			.set('Content-Type', 'application/json')
 			.set('Authorization', token);
 		return this._http.get(this.url+'getHistory?nameOfCompany='+nameOfCompany+'&typeOfUser='+typeOfUser, {headers: headers});
+	}
+
+	getHistoryOut(data, typeOfUser){
+		let json = JSON.stringify(data);
+		let params = json;
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json');
+		return this._http.get(this.url+'getDataOut?fid='+data+'&typeOfUser='+typeOfUser, {headers: headers});
 	}
 
 	searchData(data){

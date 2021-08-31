@@ -17,7 +17,7 @@
 					<!--<select  class="form-control" #fid="ngModel" name="fid" [(ngModel)]="tuser.fid" id="fid" (ngModelChange)="onChange()">
 						<option value="null">Ninguno</option>
 						<option value="{{productor._id}}" *ngFor="let productor of dataP">{{productor.name}}</option>
-						<option value="{{acopio._id}}" *ngFor="let acopio of dataA">{{acopio.name}}</option>
+						<option value="{{acopioIn._id}}" *ngFor="let acopioIn of dataA">{{acopioIn.name}}</option>
 						<option value="{{carrier._id}}" *ngFor="let carrier of dataC">{{carrier.name}}</option>
 						<option value="{{merchant._id}}" *ngFor="let merchant of dataM">{{merchant.name}}</option>
 					</select>-->
@@ -39,6 +39,16 @@
 				</div>
 			</div>
 			<div *ngIf="isMerchant">
+				<div class="row">
+					<div class="col">
+						<label for="arrivalDate">Fecha de llegada:</label>
+						<input class="form-control" #arrivalDate="ngModel" name="arrivalDate" [(ngModel)]="merchantIn.arrivalDate" id="arrivalDate" type="text" placeholder="Ingresa la fecha de entrada" required="">
+					</div>
+					<div class="col">
+						<label for="quantity">Cantidad:</label>
+						<input class="form-control" #quantity="ngModel" name="quantity" [(ngModel)]="merchantIn.quantity" id="quantity" type="text" placeholder="Ingresa la cantidad" required="">
+					</div>
+				</div>
 			</div>
 			<div *ngIf="isCarrier">
 				<div class="row">
@@ -75,6 +85,42 @@
 				</div>
 			</div>
 			<div *ngIf="isAcopio">
+				<div class="row">
+					<div class="col">
+						<label for="arrivalDate">Fecha de llegada:</label>
+						<input class="form-control" #arrivalDate="ngModel" name="arrivalDate" [(ngModel)]="acopioIn.arrivalDate" id="arrivalDate" type="text" placeholder="Ingresa la fecha de entrada" required="">
+					</div>
+					<div class="col">
+						<label for="quantity">Cantidad:</label>
+						<input class="form-control" #quantity="ngModel" name="quantity" [(ngModel)]="acopioIn.quantity" id="quantity" type="text" placeholder="Ingresa la cantidad de fruta" required="">
+					</div>
+					<div class="col">
+						<label for="measure">Unidad de medida:</label>
+						<select  class="form-control" #measure="ngModel" name="measure" [(ngModel)]="acopioIn.measure" id="measure">
+							<option value="Kilogramos" selected>Kilogramos</option>
+							<option value="Gramos">Gramos</option>
+							<option value="Tonelada">Tonelada</option>
+							<option value="Cajas">Cajas</option>
+							<option value="Costales">Costales</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<label for="clasification">Clasificación:</label>
+						<select  class="form-control" #clasification="ngModel" name="clasification" [(ngModel)]="acopioIn.clasification" id="clasification">
+							<option value="Hass" selected>Hass</option>
+							<option value="Fuerte">Fuerte</option>
+							<option value="Criollo">Criollo</option>
+							<option value="Reed">Reed</option>
+							<option value="Bacon">Bacon</option>
+						</select>
+					</div>
+					<div class="col">
+						<label for="whoReceives">Nombre de quién recibió:</label>
+						<input class="form-control" #whoReceives="ngModel" name="whoReceives" [(ngModel)]="acopioIn.whoReceives" id="whoReceives" type="text" placeholder="Ingresa el nombre de quien recibió el producto" required="">
+					</div>
+				</div>
 			</div>
 			<div *ngIf="isProductor">
 				<div class="row">

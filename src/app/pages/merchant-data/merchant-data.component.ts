@@ -3,9 +3,10 @@ import { UserService } from '../../services/user.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Users } from '../../models/users';
 import { Productors } from '../../models/productors';
-import { Acopios } from '../../models/acopios';
+import { AcopiosIn } from '../../models/acopiosIn';
 import { Carriers } from '../../models/carriers';
-import { Merchants } from '../../models/merchants';
+import { MerchantsIn } from '../../models/merchantsIn';
+
 import { TUsers } from '../../models/tusers';
 import Swal from 'sweetalert2';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
@@ -50,15 +51,18 @@ export class MerchantDataComponent implements OnInit {
 	public title;
 	public users: Users;
 	public productor: Productors;
-	public acopio: Acopios;
+	public acopioIn: AcopiosIn;
 	public carrier: Carriers;
-	public merchant: Merchants;
+	public merchantIn: MerchantsIn;
+
 	public tuser: TUsers;
 
 	public dataP: any;
 	public dataA: any;
+	public dataAO: any;
 	public dataC: any;
 	public dataM: any;
+	public dataMO: any;
 
 	public marker: any;
 
@@ -72,9 +76,9 @@ export class MerchantDataComponent implements OnInit {
 		this.users = JSON.parse(this.identity);
 		this.tuser = new TUsers('null', '', '', '', 'null', this.users.typeOfUser, this.nameOfCompany, null, '');
 		this.productor = new Productors('', '', '');
-		this.acopio = new Acopios();
+		this.acopioIn = new AcopiosIn('', '', '', '', '');
 		this.carrier = new Carriers('', '', '', '', null, null, '');
-		this.merchant = new Merchants();
+		this.merchantIn = new MerchantsIn('', '');
 		this.QR = false;
 		this.data = false;
 		this.isMerchant = false;
@@ -142,9 +146,10 @@ export class MerchantDataComponent implements OnInit {
 		formData.append('nameOfCompany', this.tuser.nameOfCompany);
 		formData.append('description', this.tuser.description);
 		formData.append('code', newCode);
-
 		if(this.users.typeOfUser == 'Merchant'){
-			this._userService.merchantData(formData).subscribe(
+			formData.append('arrivalDate', this.merchantIn.arrivalDate);
+			formData.append('quantity', this.merchantIn.quantity);
+			this._userService.merchantDataIn(formData).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
@@ -152,11 +157,10 @@ export class MerchantDataComponent implements OnInit {
 						'success'
 					)
 					this.QR = true;
-					this.value = '{ "Code": "'+response.info.code+'", \n'
-					+'"ID": "'+response.info.id+'" }';
+					this.value = '{ "Code": "'+response.info.code+'", "ID": "'+response.info.id+'" }';
 					//console.log(response);
 					this.tuser = new TUsers('null', '', '', '', 'null', this.users.typeOfUser, this.nameOfCompany, null, '');
-					//this.merchant = new Merchants('', '', '');
+					this.merchantIn = new MerchantsIn('', '');
 					this.infoMessage = response.message;
 					this.press = false;
 					this.ngOnInit();
@@ -182,7 +186,6 @@ export class MerchantDataComponent implements OnInit {
 			formData.append('productPhotos', this.fileProduct, this.fileProduct.name);
 			formData.append('vehiclePhotos', this.fileVehicle, this.fileVehicle.name);
 			formData.append('tracking', this.carrier.tracking);
-
 			this._userService.carrierData(formData).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
@@ -191,11 +194,10 @@ export class MerchantDataComponent implements OnInit {
 						'success'
 					)
 					this.QR = true;
-					this.value = '{ "Code": "'+response.info.code+'", \n'
-					+'"ID": "'+response.info.id+'" }';
+					this.value = '{ "Code": "'+response.info.code+'", "ID": "'+response.info.id+'" }';
 					//console.log(response);
-					//this.tuser = new TUsers('null', '', '', '', 'null', this.users.typeOfUser, this.nameOfCompany, null, '');
-					//this.carrier = new Carriers('', '', '', '', null, null, '');
+					this.tuser = new TUsers('null', '', '', '', 'null', this.users.typeOfUser, this.nameOfCompany, null, '');
+					this.carrier = new Carriers('', '', '', '', null, null, '');
 					this.infoMessage = response.message;
 					this.press = false;
 					this.ngOnInit();
@@ -213,8 +215,12 @@ export class MerchantDataComponent implements OnInit {
 				}
 			)
 		}else if(this.users.typeOfUser == 'Acopio'){
-			//jsonData.code = this.merchant.code; Changes when acopio get data
-			this._userService.acopioData(formData).subscribe(
+			formData.append('arrivalDate', this.acopioIn.arrivalDate);
+			formData.append('clasification', this.acopioIn.clasification);
+			formData.append('quantity', this.acopioIn.quantity);
+			formData.append('measure', this.acopioIn.measure);
+			formData.append('whoReceives', this.acopioIn.whoReceives);
+			this._userService.acopioDataIn(formData).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
@@ -222,11 +228,10 @@ export class MerchantDataComponent implements OnInit {
 						'success'
 					)
 					this.QR = true;
-					this.value = '{ "Code": "'+response.info.code+'", \n'
-					+'"ID": "'+response.info.id+'" }';
+					this.value = '{ "Code": "'+response.info.code+'", "ID": "'+response.info.id+'" }';
 					//console.log(response);
 					this.tuser = new TUsers('null', '', '', '', 'null', this.users.typeOfUser, this.nameOfCompany, null, '');
-					//this.acopio = new Acopios('', '', '');
+					this.acopioIn = new AcopiosIn('', '', '', '', '');
 					this.infoMessage = response.message;
 					this.press = false;
 					this.ngOnInit();
@@ -255,8 +260,7 @@ export class MerchantDataComponent implements OnInit {
 						'success'
 					)
 					this.QR = true;
-					this.value = '{ "Code": "'+response.info.code+'", \n'
-					+'"ID": "'+response.info.id+'" }';
+					this.value = '{ "Code": "'+response.info.code+'", "ID": "'+response.info.id+'" }';
 					//console.log(response);
 					this.tuser = new TUsers('null', '', '', '', 'null', this.users.typeOfUser, this.nameOfCompany, null, '');
 					this.productor = new Productors('', '', '');
@@ -291,9 +295,11 @@ export class MerchantDataComponent implements OnInit {
 			(response:any) => {
 				this.dataP = response.productor;
 				this.dataA = response.acopio;
+				this.dataAO = response.acopioOut;
 				this.dataC = response.carrier;
 				this.dataM = response.merchant;
-				//console.log(this.dataP, this.dataA, this.dataC, this.dataM);
+				this.dataMO = response.merchantOut;
+				//console.log(this.dataP, this.dataA, this.dataAO, this.dataC, this.dataM, this.dataMO);
 			}
 		);
 		if(this.users.typeOfUser == 'Merchant'){
@@ -334,6 +340,11 @@ export class MerchantDataComponent implements OnInit {
 				this.tuser.previousStage = 'Acopio';
 			}
 		}
+		for(var acopioOut of this.dataAO){
+			if(acopioOut._id == this.tuser.fid){
+				this.tuser.previousStage = 'Acopio';
+			}
+		}
 		for(var carrier of this.dataC){
 			if(carrier._id == this.tuser.fid){
 				this.tuser.previousStage = 'Carrier';
@@ -341,6 +352,11 @@ export class MerchantDataComponent implements OnInit {
 		}
 		for(var merchant of this.dataM){
 			if(merchant._id == this.tuser.fid){
+				this.tuser.previousStage = 'Merchant';
+			}
+		}
+		for(var merchantOut of this.dataMO){
+			if(merchantOut._id == this.tuser.fid){
 				this.tuser.previousStage = 'Merchant';
 			}
 		}
@@ -412,35 +428,51 @@ export class MerchantDataComponent implements OnInit {
 	}
 
 	searchData(){
-		var fid = (<HTMLInputElement>document.getElementById('search')).value;
-		var code = null;
-		if(fid == 'null'){
-			code = 'null';
+		var code = (<HTMLInputElement>document.getElementById('search')).value;
+		var id = null;
+		if(code == 'null'){
+			id = 'null';
 		}
 		for(var productor of this.dataP){
-			if(productor._id == fid){
-				code = productor.code;
+			if(productor.code == code){
+				id = productor._id;
 			}
 		}
 		for(var acopio of this.dataA){
-			if(acopio._id == fid){
-				code = acopio.code;
+			if(acopio.code == code){
+				id = acopio._id;
+			}
+		}
+		for(var acopioOut of this.dataAO){
+			if(acopioOut.code == code){
+				id = acopioOut._id;
 			}
 		}
 		for(var carrier of this.dataC){
-			if(carrier._id == fid){
-				code = carrier.code;
+			if(carrier.code == code){
+				id = carrier._id;
 			}
 		}
 		for(var merchant of this.dataM){
-			if(merchant._id == fid){
-				code = merchant.code;
+			if(merchant.code == code){
+				id = merchant._id;
 			}
 		}
+		for(var merchantOut of this.dataMO){
+			if(merchantOut.code == code){
+				id = merchantOut._id;
+			}
+		}
+		console.log(this.dataA);
+		console.log(this.dataAO);
+		console.log(this.dataC);
+		console.log(this.dataP);
+		console.log(this.dataMO);
+
 		var jsonData:any;
 		jsonData = {
 			Code: code,
-			ID: fid
+			ID: id
 		};
 		this._userService.searchData(jsonData).subscribe(
 			(response:any) => {

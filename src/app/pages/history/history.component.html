@@ -4,69 +4,105 @@
 			<h2>Historial de registros</h2>
 		</div>
 		<div class="row">
-      <div class="col">
+			<div class="col">
         <div class="card">
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-              <thead class="thead-light">
+					<div class="table-responsive text-center">
+						<table class="align-items-center table-flush" id="expanded-table">
+              <thead>
                 <tr>
-                  <th scope="col">Ubicación</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col" *ngIf="isProductor">Fecha de cosecha</th>
-                  <th scope="col" *ngIf="isProductor">Fecha de caducidad</th>
-                  <th scope="col">Etapa anterior</th>
-                  <th scope="col">Etapa actual</th>
-                  <th scope="col">Descripción</th>
-                  <th scope="col">Imagen</th>
-                  <th scope="col" *ngIf="isProductor">Documentación</th>
-                  <th colspan="2">Acciones</th>
+									<th>Ubicación</th>
+                  <th>Nombre</th>
+                  <th *ngIf="isProductor">Fecha de cosecha</th>
+                  <th *ngIf="isProductor">Fecha de caducidad</th>
+									<th *ngIf="isMerchant || isAcopio">Cantidad</th>
+									<th *ngIf="isMerchant || isAcopio">Fecha de llegada</th>
+                  <th>Etapa anterior</th>
+                  <th>Etapa actual</th>
+                  <th>Descripción</th>
+                  <th>Imagen</th>
+                  <th *ngIf="isProductor">Documentación</th>
+									<th>QR</th>
+                  <th>Acciones</th>
                 </tr>
-              </thead>
-              <tbody>
-                <tr class="text-center" *ngFor="let data of history">
-									<td><a title="{{ data.ubication }}" (click)="showMap(data.ubication)" type="submit"><i class="fa fa-map" aria-hidden="true"></i></a></td>
-                  <td>{{ data.name }}</td>
-                  <td *ngIf="isProductor">{{ data.harvestDate }}</td>
-                  <td *ngIf="isProductor">{{ data.caducationDate }}</td>
-                  <td>{{ data.previousStage }}</td>
-                  <td>{{ data.currentStage }}</td>
-                  <td>{{ data.description }}</td>
-                  <td><img src="http://52.202.214.13:80/images?id={{ data.image }}" width="100px" height="100px"></td>
-                  <td *ngIf="isProductor">{{ data.documentation }}</td>
-                  <td>
-                    <a class="btn btn-danger" type="submit"><i class="fa fa-trash text-white" aria-hidden="true"></i></a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!--<div class="card-footer py-4">
-          <nav aria-label="...">
-            <ul class="pagination justify-content-end">
-              <li class="page-item" [routerLink]="['/tables', prevPage]">
-                <a class="page-link">
-                  <i class="fas fa-angle-left"></i>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="javascript:void(1)">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="javascript:void(2)">2 <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="page-item"><a class="page-link" href="javascript:void(3)">3</a></li>
-              <li class="page-item" [routerLink]="['/tables', nextPage]" id="nextPage">
-                <a class="page-link">
-                  <i class="fas fa-angle-right"></i>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>-->
-      </div>
+							</thead>
+              <tbody *ngFor="let dataIn of historyIn">
+								<tr (click)="showInformation(dataIn)">
+									<td><a title="{{ dataIn.ubication }}" (click)="showMap(dataIn.ubication)" type="submit"><i class="fa fa-map blue" aria-hidden="true"></i></a></td>
+                  <td>{{ dataIn.name }}</td>
+                  <td *ngIf="isProductor">{{ dataIn.harvestDate }}</td>
+                  <td *ngIf="isProductor">{{ dataIn.caducationDate }}</td>
+									<td *ngIf="isMerchant || isAcopio">{{ dataIn.quantity }}</td>
+									<td *ngIf="isMerchant || isAcopio">{{ dataIn.arrivalDate }}</td>
+                  <td>{{ dataIn.previousStage }}</td>
+                  <td>{{ dataIn.currentStage }}</td>
+                  <td>{{ dataIn.description }}</td>
+                  <td><img src="http://52.202.214.13:80/images?id={{ dataIn.image }}" width="100px" height="100px"></td>
+                  <td *ngIf="isProductor">{{ dataIn.documentation }}</td>
+									<td>
+										<div style="text-align:center">
+												<ngx-qrcode
+												[elementType]="elementType"
+												[value]="value"
+												cssClass="aclass"
+												errorCorrectionLevel="L">
+												</ngx-qrcode>
+										</div>
+									</td>
+									<td>
+										<div *ngIf="isAcopio">
+											<ng-container  *ngIf="dataIn.quantity > 0; then available; else noavailable" class="">
+											</ng-container>
+											<ng-template  #available class="">
+												<a class="btn btn-secondary text-dark" type="submit" (click)="outputA(dataIn)">Disponible<!--<i class="fa fa-trash text-white" aria-hidden="true"></i>--></a>
+											</ng-template>
+											<ng-template #noavailable class="">
+												<button class="btn btn-secondary text-dark" type="button" name="button" disabled>No disponible</button>
+											</ng-template>
+										</div>
+										<div *ngIf="isMerchant">
+											<ng-container *ngIf="dataIn.quantity > 0; then available; else noavailable" class="">
+											</ng-container>
+											<ng-template  #available class="">
+												<a class="btn btn-secondary text-dark" type="submit" (click)="outputM(dataIn)">Disponible<!--<i class="fa fa-trash text-white" aria-hidden="true"></i>--></a>
+											</ng-template>
+											<ng-template #noavailable class="">
+												<button class="btn btn-secondary text-dark" type="button" name="button" disabled>No disponible</button>
+											</ng-template>
+										</div>
+										<div *ngIf="!isAcopio && !isMerchant">
+											<a class="btn btn-danger" type="submit"><i class="fa fa-trash text-white" aria-hidden="true"></i></a>
+										</div>
+									</td>
+								</tr>
+								<tr *ngFor="let dataOut of historyOut">
+									<td colspan="9" *ngIf="dataIn._id == dataOut.fid">
+										<div class="">
+											Nombre: {{dataOut.name}}
+										</div>
+										<div>
+											Cantidad: {{dataOut.quantity}}
+										</div>
+										<div class="">
+											Fecha de salida: {{dataOut.departureDate}}
+										</div>
+										<div *ngIf="isAcopio" class="">
+											Quién liberó: {{dataOut.whoDelivers}}
+										</div>
+										<div style="text-align:center">
+											<ngx-qrcode
+												[elementType]="elementType"
+												[value]="value"
+												cssClass="aclass"
+												errorCorrectionLevel="L">
+											</ngx-qrcode>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>

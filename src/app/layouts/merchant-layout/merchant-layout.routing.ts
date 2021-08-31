@@ -6,8 +6,6 @@ import { HistoryComponent } from '../../pages/history/history.component';
 import { MerchantAboutComponent } from '../../pages/merchant-about/merchant-about.component';
 import { MerchantDetailComponent } from '../../pages/merchant-detail/merchant-detail.component';
 
-
-
 export const MerchantLayoutRoutes: Routes = [
     //{ path: 'dashboard',      component: DashboardComponent },
     //{ path: '',              component: RootCreationComponent },
