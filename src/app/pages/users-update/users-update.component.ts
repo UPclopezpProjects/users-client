@@ -25,6 +25,8 @@ export class UsersUpdateComponent implements OnInit {
 	public token: any;
 	public isHidden: boolean;
 	public isTUser: boolean;
+	public isAdmin: boolean;
+
 	public isMe: boolean;
 	public password: String;
 	public identity;
@@ -38,7 +40,8 @@ export class UsersUpdateComponent implements OnInit {
 		private _router: Router
 	){
 		this.isHidden = true;
-		this.isTUser = true;
+		this.isTUser = false;
+		this.isAdmin = false;
 		this.isMe = false;
 		this.identity = this._userService.getIdentity();
 		//this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
@@ -75,35 +78,43 @@ export class UsersUpdateComponent implements OnInit {
 					var jsonData:any;
 					jsonData = {
 						email: response.user.email,
+            surnameA: response.user.surnameA,
+            surnameB: response.user.surnameB,
+            nameOfUser: response.user.nameOfUser,
+            typeOfUser: response.user.typeOfUser,
 						password: response.user.password,
-						typeOfUser: response.user.typeOfUser,
 						initialToken: response.user.initialToken,
-						typeOfOperation: 'update',
+						typeOfOperation: 'read',
 						nameOfOperation: this.nameOfOperation,
 						addressU: response.user.addressU,
-						nameOfUser: response.user.nameOfUser,
 						creationDate: response.user.creationDate,
 						status: response.user.status,
 						hashX: response.user.hashX,
-						dp1: responseDP.createAdministrator,
+            dp1: responseDP.createAdministrator,
 						dp2: responseDP.createTUser,
-						dp3: responseDP.updateMe,
-						dp4: responseDP.updateAdministrator,
-						dp5: responseDP.updateTUser,
-						dp6: responseDP.deleteMe,
-						dp7: responseDP.deleteAdministrator,
-						dp8: responseDP.deleteTUser,
-						dp9: responseDP.readMe,
-						dp10: responseDP.readAdministrator,
-						dp11: responseDP.readTUser,
-						dp12: responseDP.loginUser,
+            dp3: responseDP.createData,
+						dp4: responseDP.updateMe,
+						dp5: responseDP.updateAdministrator,
+						dp6: responseDP.updateTUser,
+            dp7: responseDP.updateData,
+						dp8: responseDP.deleteMe,
+						dp9: responseDP.deleteAdministrator,
+						dp10: responseDP.deleteTUser,
+            dp11: responseDP.deleteData,
+						dp12: responseDP.readMe,
+						dp13: responseDP.readAdministrator,
+						dp14: responseDP.readTUser,
+            dp15: responseDP.readData,
+						dp16: responseDP.loginUser
 					};
 					this.user = jsonData;
-					//console.log(this.user);
+					console.log(this.user);
 					if(response.user.typeOfUser == 'Administrator' || response.user.typeOfUser == 'Root'){
 						this.isTUser = false;
+						this.isAdmin = true;
 					}else if(response.user.typeOfUser == 'TUser' || response.user.typeOfUser == 'Merchant' || response.user.typeOfUser == 'Carrier' || response.user.typeOfUser == 'Acopio' || response.user.typeOfUser == 'Productor'){
 						this.isTUser = true;
+						this.isAdmin = false;
 					}
 				}
 			},
@@ -112,7 +123,7 @@ export class UsersUpdateComponent implements OnInit {
 				if(errorMessage != null){
 					//console.log("Administrator: "+error.error.message);
 					this.errorMessage = error.error.message;
-					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
 		)
@@ -129,19 +140,21 @@ export class UsersUpdateComponent implements OnInit {
 		if(this.user.nameOfUser == '' || this.user.password == ''){ //Aquí podría configurar cuando elija read marcar todo lo relacionado a este permiso
 			return alert("Rellena todos los campos");
 		}
-		var jsonDP = '{ "createAdministrator": '+this.user.dp1+', "createTUser": '+this.user.dp2+', "updateMe": '+this.user.dp3+', "updateAdministrator": '+this.user.dp4+', "updateTUser": '+this.user.dp5+', "deleteMe": '+this.user.dp6+', "deleteAdministrator": '+this.user.dp7+', "deleteTUser": '+this.user.dp8+', "readMe": '+this.user.dp9+', "readAdministrator": '+this.user.dp10+', "readTUser": '+this.user.dp11+', "loginUser": '+this.user.dp12+' }';
+		var jsonDP = '{ "createAdministrator": '+this.user.dp1+', "createTUser": '+this.user.dp2+', "createData": '+this.user.dp3+', "updateMe": '+this.user.dp4+', "updateAdministrator": '+this.user.dp5+', "updateTUser": '+this.user.dp6+', "updateData": '+this.user.dp7+', "deleteMe": '+this.user.dp8+', "deleteAdministrator": '+this.user.dp9+', "deleteTUser": '+this.user.dp10+', "deleteData": '+this.user.dp11+', "readMe": '+this.user.dp12+', "readAdministrator": '+this.user.dp13+', "readTUser": '+this.user.dp14+', "readData": '+this.user.dp15+', "loginUser": '+this.user.dp16+' }';
 		var jsonData:any;
 		jsonData = {
 			email: this.user.email,
 			password: this.user.password,
-			typeOfUser: this.user.typeOfUser,
-			initialToken: this.user.initialToken,
-			typeOfOperation: this.user.typeOfOperation,
-			nameOfOperation: this.user.nameOfOperation,
-			addressU: this.user.addressU,
+			surnameA: this.user.surnameA,
+			surnameB: this.user.surnameB,
 			nameOfUser: this.user.nameOfUser,
+			typeOfUser: this.user.typeOfUser,
 			status: this.user.status,
-			dp: jsonDP
+			initialToken: this.user.initialToken,
+			addressU: this.user.addressU,
+			typeOfOperation: 'update',
+			nameOfOperation: this.user.nameOfOperation,
+			//dp: jsonDP
 		};
         //console.log(jsonData);
 
@@ -153,6 +166,8 @@ export class UsersUpdateComponent implements OnInit {
 		var hashX = md5.appendStr(JSON.stringify(jsonData)).end();
 		jsonData.hashX = hashX;
 		jsonData.email = '';
+		console.log(jsonData);
+
 		this._userService.updateUsers(this.user.email, jsonData).subscribe(
 			(response:any) => {
 				swalWithBootstrapButtons.fire(

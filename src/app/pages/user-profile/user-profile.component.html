@@ -44,6 +44,20 @@
               <input class="form-control" #typeOfUser="ngModel" name="typeOfUser" [(ngModel)]="user.typeOfUser" id="typeOfUser" type="text" disabled>
             </div>
           </div>
+          <div *ngIf="isRoot" class="row">
+            <div class="col">
+              <label>Address Contract:</label>
+              <input class="form-control" name="addressContract" id="addressContract" type="text" value={{this.addressContract}} disabled>
+            </div>
+            <div class="col">
+              <label>Address Transaction:</label>
+              <input class="form-control" name="addressTransaction" id="addressTransaction" type="text" value={{this.addressTransaction}} disabled>
+            </div>
+            <div class="col">
+              <label>Hash:</label>
+              <input class="form-control" name="hash" id="hash" type="text" value={{this.hash}} disabled>
+            </div>
+          </div>
           <div *ngIf="isHidden" class="row">
             <div class="col">
               <hr class="my-4" />

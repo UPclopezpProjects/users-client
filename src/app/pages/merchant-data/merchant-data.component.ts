@@ -47,7 +47,6 @@ export class MerchantDataComponent implements OnInit {
 	public isHidden: boolean;
 	public identity;
 	public nameOfCompany;
-	public token;
 	public title;
 	public users: Users;
 	public productor: Productors;
@@ -66,21 +65,22 @@ export class MerchantDataComponent implements OnInit {
 
 	public marker: any;
 
+	public token: any;
+
 	constructor(
 		private _userService:UserService,
 		private _router: Router
 	){
 		this.identity = this._userService.getIdentity();
 		this.token = this._userService.getToken();
-		this.nameOfCompany = this._userService.getCompany().replace(/['"]+/g, '');
 		this.users = JSON.parse(this.identity);
+		this.nameOfCompany = this._userService.getCompany();
 		this.tuser = new TUsers('null', '', '', '', 'null', this.users.typeOfUser, this.nameOfCompany, null, '');
 		this.productor = new Productors('', '', '');
 		this.acopioIn = new AcopiosIn('', '', '', '', '');
-		this.carrier = new Carriers('', '', '', '', null, null, '');
+		this.carrier = new Carriers('', 'null', 'null', '', null, null, '');
 		this.merchantIn = new MerchantsIn('', '');
 		this.QR = false;
-		this.data = false;
 		this.isMerchant = false;
 		this.isCarrier = false;
 		this.isAcopio = false;
@@ -88,6 +88,7 @@ export class MerchantDataComponent implements OnInit {
 		this.isHidden = false;
 		this.titleQR = 'app';
 		this.elementType = 'url';
+		this.token = this._userService.getToken();
 	}
 
 	public fileChangeImage(event) {
@@ -149,7 +150,7 @@ export class MerchantDataComponent implements OnInit {
 		if(this.users.typeOfUser == 'Merchant'){
 			formData.append('arrivalDate', this.merchantIn.arrivalDate);
 			formData.append('quantity', this.merchantIn.quantity);
-			this._userService.merchantDataIn(formData).subscribe(
+			this._userService.merchantDataIn(formData, this.token).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
@@ -186,7 +187,7 @@ export class MerchantDataComponent implements OnInit {
 			formData.append('productPhotos', this.fileProduct, this.fileProduct.name);
 			formData.append('vehiclePhotos', this.fileVehicle, this.fileVehicle.name);
 			formData.append('tracking', this.carrier.tracking);
-			this._userService.carrierData(formData).subscribe(
+			this._userService.carrierData(formData, this.token).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
@@ -220,7 +221,7 @@ export class MerchantDataComponent implements OnInit {
 			formData.append('quantity', this.acopioIn.quantity);
 			formData.append('measure', this.acopioIn.measure);
 			formData.append('whoReceives', this.acopioIn.whoReceives);
-			this._userService.acopioDataIn(formData).subscribe(
+			this._userService.acopioDataIn(formData, this.token).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
@@ -252,7 +253,7 @@ export class MerchantDataComponent implements OnInit {
 			formData.append('harvestDate', this.productor.harvestDate);
 			formData.append('caducationDate', this.productor.caducationDate);
 			formData.append('documentation', this.productor.documentation);
-			this._userService.productorData(formData).subscribe(
+			this._userService.productorData(formData, this.token).subscribe(
 				(response:any) => {
 					swalWithBootstrapButtons.fire(
 						'¡Datos comprobados!',
@@ -290,8 +291,11 @@ export class MerchantDataComponent implements OnInit {
         'Necesitas proporcionar un nombre para tu empresa',
         'warning'
       )
-    }
-		this._userService.getData().subscribe(
+			return;
+    }else{
+			this.nameOfCompany = this._userService.getCompany().replace(/['"]+/g, '');
+		}
+		this._userService.getData(this.token).subscribe(
 			(response:any) => {
 				this.dataP = response.productor;
 				this.dataA = response.acopio;
@@ -308,6 +312,7 @@ export class MerchantDataComponent implements OnInit {
 			this.isAcopio = false;
 			this.isProductor = false;
 		}else if(this.users.typeOfUser == 'Carrier'){
+			this.data = false;
 			this.isMerchant = false;
 			this.isCarrier = true;
 			this.isAcopio = false;
@@ -377,7 +382,32 @@ export class MerchantDataComponent implements OnInit {
 					'No puedes marcar más puntos. Elimina la marca anterior para utilizar una nueva.',
 					'warning'
 				)
-			}/*else if (this.users.typeOfUser == 'Carrier') {
+				return;
+			}
+
+
+			if(this.tuser.previousStage == 'Carrier' && this.tuser.currentStage == 'Carrier'){
+				var latLngJSON = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2);
+				coords = JSON.parse(latLngJSON); //ESTE DATO ES EL QUE SE DEBERÍA ENVIAR
+				this.marker = new google.maps.Marker({
+					position: mapsMouseEvent.latLng,
+					map: map,
+					animation: google.maps.Animation.DROP,
+					title: 'My place'
+				});
+				this.carrier.destination = ''+coords.lat+', '+coords.lng+'';
+				this.press = true;
+
+				return;
+			}else if(this.tuser.previousStage == 'Carrier' || this.data == false){
+				swalWithBootstrapButtons.fire(
+					'¡Atención!',
+					'Mapa deshabilitado',
+					'warning'
+				)
+				return;
+			}
+			/*else if (this.users.typeOfUser == 'Carrier') {
 				var latLngJSON = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2);
 				coords = JSON.parse(latLngJSON); //ESTE DATO ES EL QUE SE DEBERÍA ENVIAR
 				this.marker = new google.maps.Marker({
@@ -398,8 +428,13 @@ export class MerchantDataComponent implements OnInit {
 					animation: google.maps.Animation.DROP,
 					title: 'My place'
 				});
-				this.tuser.ubication = ''+coords.lat+', '+coords.lng+'';
-				this.press = true;
+				if(this.users.typeOfUser == 'Carrier'){
+					this.carrier.destination = ''+coords.lat+', '+coords.lng+'';
+					this.press = true;
+				}else{
+					this.tuser.ubication = ''+coords.lat+', '+coords.lng+'';
+					this.press = true;
+				}
 			}
 		});
 	}
@@ -424,10 +459,22 @@ export class MerchantDataComponent implements OnInit {
 	deleteMarkers() {
 		this.marker.setMap(null);
 		this.press = false;
-		this.tuser.ubication = null;
+		if(this.users.typeOfUser == 'Carrier'){
+			this.carrier.destination = 'null';
+		}else{
+			this.tuser.ubication = 'null';
+		}
 	}
 
 	searchData(){
+		if(this.nameOfCompany == null || this.nameOfCompany == '""'){
+      swalWithBootstrapButtons.fire(
+        '¡Alto!',
+        'Necesitas proporcionar un nombre para tu empresa',
+        'warning'
+      )
+			return;
+    }
 		var code = (<HTMLInputElement>document.getElementById('search')).value;
 		var id = null;
 		if(code == 'null'){
@@ -463,18 +510,18 @@ export class MerchantDataComponent implements OnInit {
 				id = merchantOut._id;
 			}
 		}
-		console.log(this.dataA);
-		console.log(this.dataAO);
-		console.log(this.dataC);
-		console.log(this.dataP);
-		console.log(this.dataMO);
+		//console.log(this.dataA);
+		//console.log(this.dataAO);
+		//console.log(this.dataC);
+		//console.log(this.dataP);
+		//console.log(this.dataMO);
 
 		var jsonData:any;
 		jsonData = {
 			Code: code,
 			ID: id
 		};
-		this._userService.searchData(jsonData).subscribe(
+		this._userService.searchData(jsonData, this.token).subscribe(
 			(response:any) => {
 				this.infoMessage = response.message;
 				if (response.message == "El dato no existe" ) {
@@ -484,6 +531,37 @@ export class MerchantDataComponent implements OnInit {
 						'error'
 					)
 				}else{
+					var filled = response.message[0];
+					if (this.users.typeOfUser == 'Carrier') {
+						(<HTMLInputElement>document.getElementById('name')).disabled = false;
+						(<HTMLInputElement>document.getElementById('image')).disabled = false;
+						(<HTMLInputElement>document.getElementById('description')).disabled = false;
+						(<HTMLInputElement>document.getElementById('driverName')).disabled = false;
+						(<HTMLInputElement>document.getElementById('destination')).disabled = false;
+						(<HTMLInputElement>document.getElementById('plates')).disabled = false;
+						(<HTMLInputElement>document.getElementById('productPhotos')).disabled = false;
+						(<HTMLInputElement>document.getElementById('vehiclePhotos')).disabled = false;
+						(<HTMLInputElement>document.getElementById('tracking')).disabled = false;
+						if (filled.currentStage == 'Carrier') {
+							this.carrier.origin = filled.destination;
+
+						}else{
+							this.carrier.origin = filled.ubication;
+						}
+						this.tuser.fid = filled.id;
+						this.tuser.previousStage = filled.currentStage;
+					}else{
+						this.tuser.fid = filled.id;
+						this.tuser.previousStage = filled.currentStage;
+						if (filled.currentStage == 'Carrier') {
+							this.tuser.ubication = filled.destination;
+						}
+					}
+
+					if(this.tuser.previousStage == 'Carrier' && this.press == true){
+						this.marker.setMap(null);
+						this.press = false;
+					}
 					swalWithBootstrapButtons.fire(
 						'¡Ok!',
 						'El dato ha sido encontrado',
@@ -491,11 +569,9 @@ export class MerchantDataComponent implements OnInit {
 					)
 					this.data = true;
 					//console.log(response.message[0]);
-					var filled = response.message[0];
-					this.tuser = new TUsers(filled.id, '', '', '', filled.currentStage, this.users.typeOfUser, this.nameOfCompany, null, '');
 					//this.acopio = new Acopios('', '', '');
 				}
-				this.ngOnInit();
+				//this.ngOnInit();
 			},
 			error => {
 				var errorMessage = <any> error;
@@ -512,13 +588,23 @@ export class MerchantDataComponent implements OnInit {
 	}
 
 	deleteData(){
+		this.deleteMarkers();
+		if (this.users.typeOfUser == 'Carrier') {
+			this.carrier.origin = 'null';
+		}else if (this.users.typeOfUser != 'Carrier' && this.tuser.previousStage == 'Carrier') {
+			this.tuser.ubication = 'null';
+		}
+		this.data = false;
+		this.tuser.fid = 'null';
+		this.tuser.previousStage = 'null';
+
+		// = new TUsers('', '', '', '', '', this.users.typeOfUser, this.nameOfCompany, null, '');
+
 		(<HTMLInputElement>document.getElementById('search')).value = '';
 		swalWithBootstrapButtons.fire(
 			'¡Hecho!',
 			'Datos eliminados',
 			'info'
 		)
-		this.data = false;
-		this.tuser = new TUsers('', '', '', '', '', this.users.typeOfUser, this.nameOfCompany, null, '');
 	}
 }

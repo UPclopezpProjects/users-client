@@ -68,22 +68,27 @@ export class EditProfileComponent implements OnInit {
 						typeOfOperation: 'update',
 						nameOfOperation: 'updateMe',
 						addressU: response.user.addressU,
+						gas: response.user.gas,
 						nameOfUser: response.user.nameOfUser,
 						creationDate: response.user.creationDate,
 						status: response.user.status,
 						hashX: response.user.hashX,
 						dp1: responseDP.createAdministrator,
 						dp2: responseDP.createTUser,
-						dp3: responseDP.updateMe,
-						dp4: responseDP.updateAdministrator,
-						dp5: responseDP.updateTUser,
-						dp6: responseDP.deleteMe,
-						dp7: responseDP.deleteAdministrator,
-						dp8: responseDP.deleteTUser,
-						dp9: responseDP.readMe,
-						dp10: responseDP.readAdministrator,
-						dp11: responseDP.readTUser,
-						dp12: responseDP.loginUser,
+            dp3: responseDP.createData,
+						dp4: responseDP.updateMe,
+						dp5: responseDP.updateAdministrator,
+						dp6: responseDP.updateTUser,
+            dp7: responseDP.updateData,
+						dp8: responseDP.deleteMe,
+						dp9: responseDP.deleteAdministrator,
+						dp10: responseDP.deleteTUser,
+            dp11: responseDP.deleteData,
+						dp12: responseDP.readMe,
+						dp13: responseDP.readAdministrator,
+						dp14: responseDP.readTUser,
+            dp15: responseDP.readData,
+						dp16: responseDP.loginUser
 					};
 					if(this.user.status == 'true'){
 						this.isActive = true;
@@ -98,7 +103,7 @@ export class EditProfileComponent implements OnInit {
 					this.isHidden = false;
 					//console.log(error.error.message);
 					this.errorMessage = error.error.message;
-					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
 		);

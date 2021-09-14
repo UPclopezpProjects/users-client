@@ -26,7 +26,7 @@
                 </tr>
 							</thead>
               <tbody *ngFor="let dataIn of historyIn">
-								<tr (click)="showInformation(dataIn)">
+								<tr (click)="showInformation(dataIn)" routerLinkActive="active">
 									<td><a title="{{ dataIn.ubication }}" (click)="showMap(dataIn.ubication)" type="submit"><i class="fa fa-map blue" aria-hidden="true"></i></a></td>
                   <td>{{ dataIn.name }}</td>
                   <td *ngIf="isProductor">{{ dataIn.harvestDate }}</td>
@@ -75,7 +75,7 @@
 									</td>
 								</tr>
 								<tr *ngFor="let dataOut of historyOut">
-									<td colspan="9" *ngIf="dataIn._id == dataOut.fid">
+									<td colspan="10" *ngIf="dataIn._id == dataOut.fid">
 										<div class="">
 											Nombre: {{dataOut.name}}
 										</div>

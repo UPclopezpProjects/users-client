@@ -106,7 +106,7 @@ export class TablesComponent implements OnInit {
 					if(errorMessage != null){
 						//console.log("Administrator: "+error.error.message);
 						this.errorMessage = error.error.message;
-						this.users = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+						this.users = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 					}
 				}
 			)

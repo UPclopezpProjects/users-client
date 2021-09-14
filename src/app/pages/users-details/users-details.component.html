@@ -16,7 +16,9 @@
 							<strong>¡Error!</strong> {{ errorMessage }}
 						</div>-->
 						<p>Correo:</p><input class="form-control" #email="ngModel" name="email" [(ngModel)]="user.email" id="email" type="email" placeholder="Correo" required disabled><br>
-						<p *ngIf="isHidden">Nombre de usuario:</p><input class="form-control" #nameOfUser="ngModel" name="nameOfUser" [(ngModel)]="user.nameOfUser" id="nameOfUser" type="text" placeholder="Nombre de usuario" required=""><br>
+            <p *ngIf="isHidden">Nombre de usuario:</p><input class="form-control" #nameOfUser="ngModel" name="nameOfUser" [(ngModel)]="user.nameOfUser" id="nameOfUser" type="text" placeholder="Nombre de usuario" required=""><br>
+            <p *ngIf="isHidden">Apellido paterno:</p><input class="form-control" #surnameA="ngModel" name="surnameA" [(ngModel)]="user.surnameA" id="surnameA" type="text" placeholder="Apellido paterno" required=""><br>
+            <p *ngIf="isHidden">Apellido materno:</p><input class="form-control" #surnameB="ngModel" name="surnameB" [(ngModel)]="user.surnameB" id="surnameB" type="text" placeholder="Apellido materno" required=""><br>
 						<p>Contraseña:</p><input class="form-control" #password="ngModel" name="password" [(ngModel)]="user.password" id="password" type="password" placeholder="Contraseña" required=""><br>
 						<p *ngIf="!isHidden">Token:</p><input class="form-control" #initialToken="ngModel" name="initialToken" [(ngModel)]="user.initialToken" id="initialToken" type="text" placeholder="Token" required="" *ngIf="!isHidden">
 						<p *ngIf="!isHidden">Tipo de operación:</p><input class="form-control" #typeOfOperation="ngModel" name="typeOfOperation" [(ngModel)]="user.typeOfOperation" id="typeOfOperation" type="text" placeholder="Tipo de operación" required=""disabled="true" *ngIf="!isHidden">
@@ -26,18 +28,22 @@
 						<p *ngIf="isHidden">Fecha de creación:</p><input class="form-control" #creationDate="ngModel" name="creationDate" [(ngModel)]="user.creationDate" id="creationDate" type="text" placeholder="Fecha de creación" required="" *ngIf="isHidden">
 						<br>
 						<p>DP:</p>
-						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp1="ngModel" name="dp1" [(ngModel)]="user.dp1" id="dp1" disabled> Creación de usuarios administradores</label><br *ngIf="!isTUser">
-						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp2="ngModel" name="dp2" [(ngModel)]="user.dp2" id="dp2" disabled> Creación de usuarios normales</label><br *ngIf="!isTUser">
-						<label><input type="checkbox" #dp3="ngModel" name="dp3" [(ngModel)]="user.dp3" id="dp3" disabled> Actualización de datos personales</label><br>
-						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp4="ngModel" name="dp4" [(ngModel)]="user.dp4" id="dp4" disabled> Actualización de usuarios administradores</label><br *ngIf="!isTUser">
-						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp5="ngModel" name="dp5" [(ngModel)]="user.dp5" id="dp5" disabled> Actualización de usuarios normales</label><br *ngIf="!isTUser">
-						<label><input type="checkbox" #dp6="ngModel" name="dp6" [(ngModel)]="user.dp6" id="dp6" disabled> Eliminación de cuenta</label><br>
-						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp7="ngModel" name="dp7" [(ngModel)]="user.dp7" id="dp7" disabled> Eliminación de usuarios administradores</label><br *ngIf="!isTUser">
-						<label *ngIf="!isTUser"><input *ngIf="!isTUser"type="checkbox" #dp8="ngModel" name="dp8" [(ngModel)]="user.dp8" id="dp8" disabled> Eliminación de usuarios normales</label><br *ngIf="!isTUser">
-						<label><input type="checkbox" #dp9="ngModel" name="dp9" [(ngModel)]="user.dp9" id="dp9" disabled> Lectura de datos personales</label><br>
-						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp10="ngModel" name="dp10" [(ngModel)]="user.dp10" id="dp10" disabled> Lectura de usuarios administradores</label><br *ngIf="!isTUser">
-						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp11="ngModel" name="dp11" [(ngModel)]="user.dp11" id="dp11" disabled> Lectura de usuarios normales</label><br *ngIf="!isTUser">
-						<label><input type="checkbox" #dp12="ngModel" name="dp12" [(ngModel)]="user.dp12" id="dp12" disabled> Autenticación</label><br>
+            <label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp1="ngModel" name="dp1" [(ngModel)]="user.dp1" id="dp1"> Creación de usuarios administradores</label><br *ngIf="!isTUser">
+						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp2="ngModel" name="dp2" [(ngModel)]="user.dp2" id="dp2"> Creación de usuarios normales</label><br *ngIf="!isTUser">
+            <label *ngIf="!isAdmin"><input *ngIf="!isAdmin" type="checkbox" #dp3="ngModel" name="dp3" [(ngModel)]="user.dp3" id="dp3"> Agregar datos</label><br *ngIf="!isAdmin">
+						<label><input type="checkbox" #dp4="ngModel" name="dp4" [(ngModel)]="user.dp4" id="dp4"> Actualización de datos personales</label><br>
+						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp5="ngModel" name="dp5" [(ngModel)]="user.dp5" id="dp5"> Actualización de usuarios administradores</label><br *ngIf="!isTUser">
+						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp6="ngModel" name="dp6" [(ngModel)]="user.dp6" id="dp6"> Actualización de usuarios normales</label><br *ngIf="!isTUser">
+            <label *ngIf="!isAdmin"><input *ngIf="!isAdmin" type="checkbox" #dp7="ngModel" name="dp7" [(ngModel)]="user.dp7" id="dp7"> Acutalizar datos</label><br *ngIf="!isAdmin">
+						<label><input type="checkbox" #dp8="ngModel" name="dp8" [(ngModel)]="user.dp8" id="dp8"> Eliminación de cuenta</label><br>
+						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp9="ngModel" name="dp9" [(ngModel)]="user.dp9" id="dp9"> Eliminación de usuarios administradores</label><br *ngIf="!isTUser">
+						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp10="ngModel" name="dp10" [(ngModel)]="user.ddp10p8" id="dp10"> Eliminación de usuarios normales</label><br *ngIf="!isTUser">
+            <label *ngIf="!isAdmin"><input *ngIf="!isAdmin" type="checkbox" #dp11="ngModel" name="dp11" [(ngModel)]="user.dp11" id="dp11"> Eliminación de datos</label><br *ngIf="!isAdmin">
+						<label ><input type="checkbox" #dp12="ngModel" name="dp12" [(ngModel)]="user.dp12" id="dp12"> Lectura de datos personales</label><br>
+						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp13="ngModel" name="dp13" [(ngModel)]="user.dp13" id="dp13"> Lectura de usuarios administradores</label><br *ngIf="!isTUser">
+						<label *ngIf="!isTUser"><input *ngIf="!isTUser" type="checkbox" #dp14="ngModel" name="dp14" [(ngModel)]="user.dp14" id="dp14"> Lectura de usuarios normales</label><br *ngIf="!isTUser">
+            <label *ngIf="!isAdmin"><input *ngIf="!isAdmin" type="checkbox" #dp15="ngModel" name="dp15" [(ngModel)]="user.dp15" id="dp15"> Lectura de datos</label><br *ngIf="!isAdmin">
+						<label><input type="checkbox" #dp16="ngModel" name="dp16" [(ngModel)]="user.dp16" id="dp16"> Autenticación</label><br>
 						<button class="btn btn-primary" [routerLink]="['/tables/1']">Atrás</button>
 					</div>
 			</div>

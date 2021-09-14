@@ -17,6 +17,7 @@ export class UsersDetailsComponent implements OnInit {
 	public form: any;
 	public isHidden: boolean;
 	public isTUser: boolean;
+  public isAdmin: boolean;
 	public identity;
 	public user: Users;
 	public errorMessage: any;
@@ -32,7 +33,7 @@ export class UsersDetailsComponent implements OnInit {
 		this.isTUser = true;
 		//this.identity = this._userService.getIdentity();
 		//this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
-		this.user = new Users('email', 'password', 'surnameA', 'surnameB','typeOfUser', 'initialToken', 'typeOfOperation', 'nameOfOperation', 'addressU', 'hashX', 'status', 'creationDate', 'nameOfUser', 'dp1', 'dp2', 'dp3', 'dp4', 'dp5', 'dp6', 'dp7', 'dp8', 'dp9', 'dp10', 'dp11', 'dp12');
+		this.user = new Users('email', 'password', 'surnameA', 'surnameB','typeOfUser', 'initialToken', 'typeOfOperation', 'nameOfOperation', 'addressU', 'gas', 'hashX', 'status', 'creationDate', 'nameOfUser', 'dp1', 'dp2', 'dp3', 'dp4', 'dp5', 'dp6', 'dp7', 'dp8', 'dp9', 'dp10', 'dp11', 'dp12', 'dp13', 'dp14', 'dp15', 'dp16');
 		//this.user = JSON.parse(this.identity);
 		//console.log(this.user);
 		this.token = this._userService.getToken();
@@ -59,34 +60,42 @@ export class UsersDetailsComponent implements OnInit {
 					var jsonData:any;
           jsonData = {
 						email: response.user.email,
+            surnameA: response.user.surnameA,
+            surnameB: response.user.surnameB,
+            nameOfUser: response.user.nameOfUser,
+            typeOfUser: response.user.typeOfUser,
 						password: response.user.password,
-						typeOfUser: response.user.typeOfUser,
 						initialToken: response.user.initialToken,
 						typeOfOperation: 'read',
 						nameOfOperation: this.nameOfOperation,
 						addressU: response.user.addressU,
-						nameOfUser: response.user.nameOfUser,
 						creationDate: response.user.creationDate,
 						status: response.user.status,
 						hashX: response.user.hashX,
-						dp1: responseDP.createAdministrator,
+            dp1: responseDP.createAdministrator,
 						dp2: responseDP.createTUser,
-						dp3: responseDP.updateMe,
-						dp4: responseDP.updateAdministrator,
-						dp5: responseDP.updateTUser,
-						dp6: responseDP.deleteMe,
-						dp7: responseDP.deleteAdministrator,
-						dp8: responseDP.deleteTUser,
-						dp9: responseDP.readMe,
-						dp10: responseDP.readAdministrator,
-						dp11: responseDP.readTUser,
-						dp12: responseDP.loginUser,
+            dp3: responseDP.createData,
+						dp4: responseDP.updateMe,
+						dp5: responseDP.updateAdministrator,
+						dp6: responseDP.updateTUser,
+            dp7: responseDP.updateData,
+						dp8: responseDP.deleteMe,
+						dp9: responseDP.deleteAdministrator,
+						dp10: responseDP.deleteTUser,
+            dp11: responseDP.deleteData,
+						dp12: responseDP.readMe,
+						dp13: responseDP.readAdministrator,
+						dp14: responseDP.readTUser,
+            dp15: responseDP.readData,
+						dp16: responseDP.loginUser
 					};
 					this.user = jsonData;
 					if(response.user.typeOfUser == 'Administrator' || response.user.typeOfUser == 'Root' ){
 						this.isTUser = false;
+            this.isAdmin = true;
 					}else if(response.user.typeOfUser == 'TUser' || response.user.typeOfUser == 'Merchant' || response.user.typeOfUser == 'Carrier' || response.user.typeOfUser == 'Acopio' || response.user.typeOfUser == 'Productor'){
 						this.isTUser = true;
+            this.isAdmin = false;
 					}
 				}
 			},
@@ -95,7 +104,7 @@ export class UsersDetailsComponent implements OnInit {
 				if(errorMessage != null){
 					//console.log("Administrator: "+error.error.message);
 					this.errorMessage = error.error.message;
-					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+					this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
 		)

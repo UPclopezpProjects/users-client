@@ -192,18 +192,22 @@ export class UserService{
 		return forkJoin([responseP, responseA, responseC, responseM]);
 	}
 
-	getData(){
-		return this._http.get(this.url+'getData');
+	getData(token){
+		let headers = new HttpHeaders()
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
+		return this._http.get(this.url+'getData', {headers: headers});
 	}
 
-	merchantsCompany(data, gethash = null){
+	merchantsCompany(data, token, gethash = null){
 		if(gethash != null){
 			data.gethash = gethash;
 		}
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 
@@ -212,64 +216,73 @@ export class UserService{
 			//.pipe(map(data => new user(data)));
 	}
 
-	getCompanyM(data, gethash = null){
+	getCompanyM(data, token, gethash = null){
 		if(gethash != null){
 			data.gethash = gethash;
 		}
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		return this._http.post(this.url+'getCompanyM', params, {headers: headers});
 	}
 
-	merchantDataIn(formData){
-		return this._http.post(this.url+'merchantsDataIn', formData);
+	merchantDataIn(formData, token){
+		let headers = new HttpHeaders()
+			.set('Authorization', token);
+		return this._http.post(this.url+'merchantsDataIn', formData, {headers: headers});
 	}
 
-	merchantDataOut(formData){
-		return this._http.post(this.url+'merchantsDataOut', formData);
+	merchantDataOut(formData, token){
+		let headers = new HttpHeaders()
+			.set('Authorization', token);
+		return this._http.post(this.url+'merchantsDataOut', formData, {headers: headers});
 	}
 
-	carriersCompany(data, gethash = null){
+	carriersCompany(data, token, gethash = null){
 		if(gethash != null){
 			data.gethash = gethash;
 		}
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
-
 		return this._http.post(this.url+'carriersCompany', params, {headers: headers});
 			//}.pipe(map(res => res.json()));
 			//.pipe(map(data => new user(data)));
 	}
 
-	getCompanyC(data, gethash = null){
+	getCompanyC(data, token, gethash = null){
 		if(gethash != null){
 			data.gethash = gethash;
 		}
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		return this._http.post(this.url+'getCompanyC', params, {headers: headers});
 	}
 
-	carrierData(formData){
-		return this._http.post(this.url+'carriersData', formData);
+	carrierData(formData, token){
+		let headers = new HttpHeaders()
+			.set('Authorization', token);
+		return this._http.post(this.url+'carriersData', formData, {headers: headers});
 	}
 
-	acopiosCompany(data, gethash = null){
+	acopiosCompany(data, token, gethash = null){
 		if(gethash != null){
 			data.gethash = gethash;
 		}
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 
@@ -278,23 +291,28 @@ export class UserService{
 			//.pipe(map(data => new user(data)));
 	}
 
-	getCompanyA(data, gethash = null){
+	getCompanyA(data, token, gethash = null){
 		if(gethash != null){
 			data.gethash = gethash;
 		}
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		return this._http.post(this.url+'getCompanyA', params, {headers: headers});
 	}
 
-	acopioDataIn(formData){
-		return this._http.post(this.url+'acopiosDataIn', formData);
+	acopioDataIn(formData, token){
+		let headers = new HttpHeaders()
+			.set('Authorization', token);
+		return this._http.post(this.url+'acopiosDataIn', formData, {headers: headers});
 	}
 
-	acopioDataOut(formData){
-		return this._http.post(this.url+'acopiosDataOut', formData);
+	acopioDataOut(formData, token){
+		let headers = new HttpHeaders()
+			.set('Authorization', token);
+		return this._http.post(this.url+'acopiosDataOut', formData, {headers: headers});
 	}
 
 	acopiosDataUpdate(data){
@@ -305,14 +323,15 @@ export class UserService{
 		return this._http.put(this.url+'acopiosDataUpdate', params, {headers: headers});
 	}
 
-	productorsCompany(data, gethash = null){
+	productorsCompany(data, token, gethash = null){
 		if(gethash != null){
 			data.gethash = gethash;
 		}
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		//console.log(headers);
 		//let headers = new Headers({'Content-Type':'aplication/json'});
 
@@ -321,19 +340,22 @@ export class UserService{
 			//.pipe(map(data => new user(data)));
 	}
 
-	getCompanyP(data, gethash = null){
+	getCompanyP(data, token, gethash = null){
 		if(gethash != null){
 			data.gethash = gethash;
 		}
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		return this._http.post(this.url+'getCompanyP', params, {headers: headers});
 	}
 
-	productorData(formData){
-		return this._http.post(this.url+'productorsData', formData);
+	productorData(formData, token){
+		let headers = new HttpHeaders()
+			.set('Authorization', token);
+		return this._http.post(this.url+'productorsData', formData, {headers: headers});
 	}
 
 	getHistory(token, nameOfCompany: string, typeOfUser: string){
@@ -343,19 +365,21 @@ export class UserService{
 		return this._http.get(this.url+'getHistory?nameOfCompany='+nameOfCompany+'&typeOfUser='+typeOfUser, {headers: headers});
 	}
 
-	getHistoryOut(data, typeOfUser){
+	getHistoryOut(data, typeOfUser, token){
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
-		return this._http.get(this.url+'getDataOut?fid='+data+'&typeOfUser='+typeOfUser, {headers: headers});
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
+		return this._http.get(this.url+'getHistoryOut?fid='+data+'&typeOfUser='+typeOfUser, {headers: headers});
 	}
 
-	searchData(data){
+	searchData(data, token){
 		let json = JSON.stringify(data);
 		let params = json;
 		let headers = new HttpHeaders()
-			.set('Content-Type', 'application/json');
+			.set('Content-Type', 'application/json')
+			.set('Authorization', token);
 		return this._http.post(this.url+'traceability', params, {headers: headers});
 	}
 }

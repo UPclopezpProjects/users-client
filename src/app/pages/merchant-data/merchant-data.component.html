@@ -30,7 +30,7 @@
 			<div class="row">
 				<div class="col">
 					<label for="name">Nombre del eslabón actual:</label>
-					<input class="form-control" #name="ngModel" name="name" [(ngModel)]="tuser.name" id="name" type="text" placeholder="Ingresa el nombre del paquete" required="">
+					<input class="form-control" #name="ngModel" name="name" [(ngModel)]="tuser.name" id="name" type="text" placeholder="Ingresa el nombre del paquete" required="" [disabled]="isCarrier">
 					<!--<input class="form-control" #image="ngModel" name="image" [(ngModel)]="merchant.image" id="image" type="file" required="" (change)="fileChangeEvent($event)">-->
 				</div>
 				<div class="col">
@@ -54,33 +54,33 @@
 				<div class="row">
 					<div class="col">
 						<label for="driverName">Nombre del conductor:</label>
-						<input class="form-control" #driverName="ngModel" name="driverName" [(ngModel)]="carrier.driverName" id="driverName" type="text" placeholder="Ingresa el nombre del conductor de la unidad" required="">
+						<input class="form-control" #driverName="ngModel" name="driverName" [(ngModel)]="carrier.driverName" id="driverName" type="text" placeholder="Ingresa el nombre del conductor de la unidad" required="" [disabled]="isCarrier">
 					</div>
 					<div class="col">
 						<label for="origin">Origen:</label>
-						<input class="form-control" #origin="ngModel" name="origin" [(ngModel)]="carrier.origin" id="origin" type="text" placeholder="" required="" >
+						<input class="form-control" #origin="ngModel" name="origin" [(ngModel)]="carrier.origin" id="origin" type="text" placeholder="" required="" [disabled]="true">
 					</div>
 					<div class="col">
 						<label for="destination">Destino:</label>
-						<input class="form-control" #destination="ngModel" name="destination" [(ngModel)]="carrier.destination" id="destination" type="text" placeholder="" required="" >
+						<input class="form-control" #destination="ngModel" name="destination" [(ngModel)]="carrier.destination" id="destination" type="text" placeholder="" required="" [disabled]="true">
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
 						<label for="plates">Placas del vehículo:</label>
-						<input class="form-control" #plates="ngModel" name="plates" [(ngModel)]="carrier.plates" id="plates" type="text" placeholder="Ingresa el número de placas del vehículo" required="">
+						<input class="form-control" #plates="ngModel" name="plates" [(ngModel)]="carrier.plates" id="plates" type="text" placeholder="Ingresa el número de placas del vehículo" required="" [disabled]="true">
 					</div>
 					<div class="col">
 						<label for="productPhotos">Fotos del producto:</label>
-						<input (change)="fileChangeProduct($event)" class="form-control" #productPhotos="ngModel" name="productPhotos" [(ngModel)]="carrier.productPhotos" id="productPhotos" type="file" placeholder="IMAGEN" required="">
+						<input (change)="fileChangeProduct($event)" class="form-control" #productPhotos="ngModel" name="productPhotos" [(ngModel)]="carrier.productPhotos" id="productPhotos" type="file" placeholder="IMAGEN" required="" [disabled]="true">
 					</div>
 					<div class="col">
 						<label for="vehiclePhotos">Fotos del vehículo:</label>
-						<input (change)="fileChangeVehicle($event)" class="form-control" #vehiclePhotos="ngModel" name="vehiclePhotos" [(ngModel)]="carrier.vehiclePhotos" id="vehiclePhotos" type="file" placeholder="IMAGEN" required="">
+						<input (change)="fileChangeVehicle($event)" class="form-control" #vehiclePhotos="ngModel" name="vehiclePhotos" [(ngModel)]="carrier.vehiclePhotos" id="vehiclePhotos" type="file" placeholder="IMAGEN" required="" [disabled]="true">
 					</div>
 					<div class="col">
 						<label for="tracking">ID de rastreo:</label>
-						<input class="form-control" #tracking="ngModel" name="tracking" [(ngModel)]="carrier.tracking" id="tracking" type="text" placeholder="" required="" >
+						<input class="form-control" #tracking="ngModel" name="tracking" [(ngModel)]="carrier.tracking" id="tracking" type="text" placeholder="" required="" placeholder="THIS FIELD MUST BE FILLED AUTOMATICALLY" [disabled]="true">
 					</div>
 				</div>
 			</div>
@@ -145,17 +145,17 @@
 				</div>
 				<div class="col">
 					<label for="image">Imagen:</label>
-					<input (change)="fileChangeImage($event)" class="form-control" #image="ngModel" name="image" [(ngModel)]="tuser.image" id="image" type="file" placeholder="IMAGEN" required="">
+					<input (change)="fileChangeImage($event)" class="form-control" #image="ngModel" name="image" [(ngModel)]="tuser.image" id="image" type="file" placeholder="IMAGEN" required="" [disabled]="isCarrier">
 				</div>
-				<div class="col">
+				<div *ngIf="!isCarrier" class="col">
 					<label for="ubication">Ubicación:</label>
-					<input class="form-control" #ubication="ngModel" name="ubication" [(ngModel)]="tuser.ubication" id="ubication" type="text" placeholder="Ubicación" required="" disabled>
+					<input class="form-control" #ubication="ngModel" name="ubication" [(ngModel)]="tuser.ubication" id="ubication" type="text" placeholder="Ubicación de la etapa actual" required="" disabled>
 				</div>
 			</div>
 			<div class="row" *ngIf="!isHidden"> <!--Show in dev -->
 				<div class="col">
 					<label for="description">Description:</label>
-					<input class="form-control" #description="ngModel" name="description" [(ngModel)]="tuser.description" id="description" type="text" placeholder="Describe el producto" required="">
+					<input class="form-control" #description="ngModel" name="description" [(ngModel)]="tuser.description" id="description" type="text" placeholder="Describe el producto" required="" [disabled]="isCarrier">
 				</div>
 				<div class="col">
 					<label for="permitions">Permisos:</label>
@@ -168,7 +168,7 @@
 					<div id="floating-panel" *ngIf="press">
 						<button class="btn btn-warning"(click)="deleteMarkers()" type="button" name="button">Eliminar marca</button>
 				  </div>
-					<br *ngIf="press"><div id="googleMap" style="width:100%;height:400px;"></div>
+					<br><div id="googleMap" style="width:100%;height:400px;"></div>
 				</div>
 			</div>
 			<br>

@@ -45,7 +45,7 @@
             <p *ngIf="!isHidden">Token:</p><input #initialToken="ngModel" name="initialToken" [(ngModel)]="user.initialToken" id="initialToken" type="text" placeholder="Token" required="" *ngIf="!isHidden">
             <p *ngIf="!isHidden">Tipo de operación:</p><input #typeOfOperation="ngModel" name="typeOfOperation" [(ngModel)]="user.typeOfOperation" id="typeOfOperation" type="text" placeholder="Tipo de operación" required="" disabled="true" *ngIf="!isHidden">
             <p *ngIf="!isHidden">Nombre de operación:</p><input #nameOfOperation="ngModel" name="nameOfOperation" [(ngModel)]="user.nameOfOperation" id="nameOfOperation" type="text" placeholder="Nombre de operación" required="" disabled="true" *ngIf="!isHidden">
-            <input class="form-control" name="gas" type="text" placeholder="Gas" required=""><br>
+            <input class="form-control" #gas="ngModel" name="gas" [(ngModel)]="user.gas" id="gas" type="text" placeholder="Gas" required="" disabled><br>
             <input class="form-control" #addressU="ngModel" name="addressU" [(ngModel)]="user.addressU" id="addressU" type="text" placeholder="Address" required="" *ngIf="isHidden">
             <p *ngIf="!isHidden">HashX:</p><input #hashX="ngModel" name="hashX" [(ngModel)]="user.hashX" id="hashX" type="text" placeholder="HashX" required="" disabled="true" *ngIf="!isHidden">
             <p *ngIf="!isHidden">Estado:</p><input class="form-control" #status="ngModel" name="status" [(ngModel)]="user.status" id="status" type="text" placeholder="Estado" required="" *ngIf="!isHidden">

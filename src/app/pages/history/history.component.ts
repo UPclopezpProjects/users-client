@@ -28,7 +28,6 @@ export class HistoryComponent implements OnInit {
 	public fileImage: File;
 
   public nameOfCompany;
-  public token;
   public infoMessage: any;
   public identity;
   public users: Users;
@@ -52,7 +51,7 @@ export class HistoryComponent implements OnInit {
 	public showTable: boolean;
 	public fid: any;
 
-
+	public token: any;
 
 	constructor(
     private _userService:UserService,
@@ -60,7 +59,7 @@ export class HistoryComponent implements OnInit {
   ) {
     this.identity = this._userService.getIdentity();
     this.users = JSON.parse(this.identity);
-    this.nameOfCompany = this._userService.getCompany().replace(/['"]+/g, '');
+    this.nameOfCompany = this._userService.getCompany();
     this.token = this._userService.getToken();
 		this.isMerchant = false;
 		this.isCarrier = false;
@@ -69,6 +68,7 @@ export class HistoryComponent implements OnInit {
 		this.acopioOut = new AcopiosOut('', '', '', '', '');
 		this.QR = false;
 		this.showTable = false;
+		this.token = this._userService.getToken();
   }
 
   ngOnInit(): void {
@@ -291,7 +291,7 @@ export class HistoryComponent implements OnInit {
 				formData.append('measure', jsonData.measure);
 				formData.append('whoDelivers', jsonData.whoDelivers);
 				//this._userService.acopiosDataUpdate(jsonData).subscribe(
-				this._userService.acopioDataOut(formData).subscribe(
+				this._userService.acopioDataOut(formData, this.token).subscribe(
 					(response:any) => {
 						this.infoMessage = response;
 						swalWithBootstrapButtons.fire(
@@ -426,7 +426,7 @@ export class HistoryComponent implements OnInit {
 				formData.append('code', newCode);
 				formData.append('quantity', jsonData.quantity);
 				formData.append('departureDate', jsonData.departureDate);
-				this._userService.merchantDataOut(formData).subscribe(
+				this._userService.merchantDataOut(formData, this.token).subscribe(
 					(response:any) => {
 						this.infoMessage = response;
 						swalWithBootstrapButtons.fire(
@@ -460,7 +460,7 @@ export class HistoryComponent implements OnInit {
 		if (this.showTable == false && this.fid != dataIn._id) {
 			this.showTable = true;
 			this.fid = dataIn._id;
-			this._userService.getHistoryOut(dataIn._id, this.users.typeOfUser).subscribe(
+			this._userService.getHistoryOut(dataIn._id, this.users.typeOfUser, this.token).subscribe(
 				(response:any) => {
 					this.historyOut = response.history;
 					for(var history of this.historyOut){
@@ -484,7 +484,7 @@ export class HistoryComponent implements OnInit {
 		else if (this.showTable == true && this.fid != dataIn._id) {
 			//console.log(2);
 			this.fid = dataIn._id;
-			this._userService.getHistoryOut(dataIn._id, this.users.typeOfUser).subscribe(
+			this._userService.getHistoryOut(dataIn._id, this.users.typeOfUser, this.token).subscribe(
 				(response:any) => {
 					//this.infoMessage = response.history;
 	        this.historyOut = response.history;

@@ -40,15 +40,18 @@ export class MerchantAboutComponent implements OnInit {
   }
 
   ngOnInit() {
+		this.getUser();
     if(this.nameOfCompany == null || this.nameOfCompany == '""'){
       swalWithBootstrapButtons.fire(
         '¡Alto!',
         'Necesitas proporcionar un nombre para tu empresa',
         'warning'
       )
-      this.nameOfCompany = 'NOMBRE DE EMPRESA SIN COMPROBAR';
-    }
-    this.getUser();
+      //this.nameOfCompany = 'NOMBRE DE EMPRESA SIN COMPROBAR';
+			return;
+    }else{
+			this.nameOfCompany = this._userService.getCompany().replace(/['"]+/g, '');
+		}
   }
 
   public getUser(){
@@ -58,6 +61,8 @@ export class MerchantAboutComponent implements OnInit {
           this._router.navigate(['/']);
         }else{
           var responseDP = JSON.parse(this.identity.dp);
+					console.log(responseDP);
+
 		  		var jsonData = {
             email: this.identity.email,
 		  			password: this.identity.password,
@@ -68,22 +73,27 @@ export class MerchantAboutComponent implements OnInit {
 		  			typeOfOperation: 'read',
 		  			nameOfOperation: 'readMe',
 		  			addressU: this.identity.addressU,
+						gas: this.identity.gas,
             hashX: this.identity.hashX,
             status: this.identity.status,
             creationDate: this.identity.creationDate,
 		  			nameOfUser: this.identity.nameOfUser,
-		  			dp1: responseDP.createAdministrator,
-		  			dp2: responseDP.createTUser,
-		  			dp3: responseDP.updateMe,
-		  			dp4: responseDP.updateAdministrator,
-		  			dp5: responseDP.updateTUser,
-		  			dp6: responseDP.deleteMe,
-		  			dp7: responseDP.deleteAdministrator,
-		  			dp8: responseDP.deleteTUser,
-		  			dp9: responseDP.readMe,
-		  			dp10: responseDP.readAdministrator,
-		  			dp11: responseDP.readTUser,
-		  			dp12: responseDP.loginUser
+						dp1: responseDP.createAdministrator,
+						dp2: responseDP.createTUser,
+            dp3: responseDP.createData,
+						dp4: responseDP.updateMe,
+						dp5: responseDP.updateAdministrator,
+						dp6: responseDP.updateTUser,
+            dp7: responseDP.updateData,
+						dp8: responseDP.deleteMe,
+						dp9: responseDP.deleteAdministrator,
+						dp10: responseDP.deleteTUser,
+            dp11: responseDP.deleteData,
+						dp12: responseDP.readMe,
+						dp13: responseDP.readAdministrator,
+						dp14: responseDP.readTUser,
+            dp15: responseDP.readData,
+						dp16: responseDP.loginUser
 		  		};
 		  		this.user = jsonData;
         }
@@ -94,7 +104,7 @@ export class MerchantAboutComponent implements OnInit {
           this.isHidden = false;
           //console.log(error.error.message);
           this.errorMessage = error.error.message;
-          this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null);
+          this.user = new Users('null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
       }
     );

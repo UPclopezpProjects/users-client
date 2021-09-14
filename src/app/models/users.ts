@@ -9,6 +9,7 @@ export class Users{
 		public typeOfOperation: string,
 		public nameOfOperation: string,
 		public addressU: string,
+		public gas: string,
 		public hashX: string,
 		public status: any,
 		public creationDate: string,
@@ -24,6 +25,10 @@ export class Users{
 		public dp9: any,
 		public dp10: any,
 		public dp11: any,
-		public dp12: any
+		public dp12: any,
+		public dp13: any,
+		public dp14: any,
+		public dp15: any,
+		public dp16: any
 	){}
 }

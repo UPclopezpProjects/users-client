@@ -16,10 +16,14 @@
 							<li><i class="icofont-rounded-right"></i><strong>Correo:</strong><input class="form-control" #email="ngModel" name="email" [(ngModel)]="user.email" id="email" type="email" disabled></li>
 							<li><i class="icofont-rounded-right"></i><strong>Fecha de registro:</strong><input class="form-control" #creationDate="ngModel" name="creationDate" [(ngModel)]="user.creationDate" id="creationDate" type="text" disabled=""></li>
 							<li><i class="icofont-rounded-right"></i><strong>DP:</strong><br>
-								<label><input type="checkbox" #dp3="ngModel" name="dp3" [(ngModel)]="user.dp3" id="dp3" disabled> Actualización de datos personales</label><br>
-								<label><input type="checkbox" #dp6="ngModel" name="dp6" [(ngModel)]="user.dp6" id="dp6" disabled> Eliminación de cuenta</label><br>
-								<label><input type="checkbox" #dp9="ngModel" name="dp9" [(ngModel)]="user.dp9" id="dp9" disabled> Lectura de datos personales</label><br>
-								<label><input type="checkbox" #dp12="ngModel" name="dp12" [(ngModel)]="user.dp12" id="dp12" disabled> Autenticación</label><br>
+								<label><input type="checkbox" #dp3="ngModel" name="dp3" [(ngModel)]="user.dp3" id="dp3" disabled> Agregar datos</label><br>
+								<label><input type="checkbox" #dp4="ngModel" name="dp4" [(ngModel)]="user.dp4" id="dp4" disabled> Actualización de datos personales</label><br>
+		            <label><input type="checkbox" #dp7="ngModel" name="dp7" [(ngModel)]="user.dp7" id="dp7" disabled> Acutalizar datos</label><br>
+								<label><input type="checkbox" #dp8="ngModel" name="dp8" [(ngModel)]="user.dp8" id="dp8" disabled> Eliminación de cuenta</label><br>
+								<label><input type="checkbox" #dp11="ngModel" name="dp11" [(ngModel)]="user.dp11" id="dp11" disabled> Eliminación de datos</label><br>
+								<label><input type="checkbox" #dp12="ngModel" name="dp12" [(ngModel)]="user.dp12" id="dp12" disabled> Lectura de datos personales</label><br>
+								<label><input type="checkbox" #dp15="ngModel" name="dp15" [(ngModel)]="user.dp15" id="dp15" disabled> Lectura de datos</label><br>
+								<label><input type="checkbox" #dp16="ngModel" name="dp16" [(ngModel)]="user.dp16" id="dp16" disabled> Autenticación</label><br>
 							</li>
 						</ul>
 					</div>

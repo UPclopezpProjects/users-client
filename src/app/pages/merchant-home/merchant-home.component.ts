@@ -28,11 +28,14 @@ export class MerchantHomeComponent implements OnInit {
   public nameOfCompany;
   public isHidden: boolean;
   public infoMessage: any;
+	public token: any;
+
 
   constructor(
     private _userService: UserService,
 		private _router: Router
   ) {
+		this.token = this._userService.getToken();
     this.identity = this._userService.getIdentity();
     this.nameOfCompany = this._userService.getCompany();
     this.users = JSON.parse(this.identity);
@@ -43,6 +46,7 @@ export class MerchantHomeComponent implements OnInit {
     if(this.nameOfCompany == null || this.nameOfCompany == '""'){
       this.checkCompany();
     }else{
+			this.nameOfCompany = this._userService.getCompany().replace(/['"]+/g, '');
       this.isHidden = false;
     }
   }
@@ -53,7 +57,7 @@ export class MerchantHomeComponent implements OnInit {
 			email: this.users.email
 		};
 		if(this.users.typeOfUser == 'Merchant'){
-			this._userService.getCompanyM(jsonData).subscribe(
+			this._userService.getCompanyM(jsonData, this.token).subscribe(
 				(response:any) => {
 					if(response.message == null){
 						this.isHidden = true;
@@ -67,12 +71,20 @@ export class MerchantHomeComponent implements OnInit {
 					if(errorMessage != null){
 						//console.log("Administrator: "+error.error.message);
 						this.infoMessage = error.error.message;
+						this.isHidden = true;
+						swalWithBootstrapButtons.fire(
+							'¡Error!',
+							this.infoMessage,
+							'error'
+						)
 					}
 				}
 			)
 		}else if(this.users.typeOfUser == 'Carrier'){
-			this._userService.getCompanyC(jsonData).subscribe(
+			this._userService.getCompanyC(jsonData, this.token).subscribe(
 				(response:any) => {
+					console.log(response);
+
 					if(response.message == null){
 						this.isHidden = true;
 					}else{
@@ -84,11 +96,17 @@ export class MerchantHomeComponent implements OnInit {
 					var errorMessage = <any> error;
 					if(errorMessage != null){
 						this.infoMessage = error.error.message;
+						this.isHidden = true;
+						swalWithBootstrapButtons.fire(
+							'¡Error!',
+							this.infoMessage,
+							'error'
+						)
 					}
 				}
 			)
 		}else if(this.users.typeOfUser == 'Acopio'){
-			this._userService.getCompanyA(jsonData).subscribe(
+			this._userService.getCompanyA(jsonData, this.token).subscribe(
 				(response:any) => {
 					if(response.message == null){
 						this.isHidden = true;
@@ -101,11 +119,17 @@ export class MerchantHomeComponent implements OnInit {
 					var errorMessage = <any> error;
 					if(errorMessage != null){
 						this.infoMessage = error.error.message;
+						this.isHidden = true;
+						swalWithBootstrapButtons.fire(
+							'¡Error!',
+							this.infoMessage,
+							'error'
+						)
 					}
 				}
 			)
 		}else if(this.users.typeOfUser == 'Productor'){
-			this._userService.getCompanyP(jsonData).subscribe(
+			this._userService.getCompanyP(jsonData, this.token).subscribe(
 				(response:any) => {
 					if(response.message == null){
 						this.isHidden = true;
@@ -118,6 +142,12 @@ export class MerchantHomeComponent implements OnInit {
 					var errorMessage = <any> error;
 					if(errorMessage != null){
 						this.infoMessage = error.error.message;
+						this.isHidden = true;
+						swalWithBootstrapButtons.fire(
+							'¡Error!',
+							this.infoMessage,
+							'error'
+						)
 					}
 				}
 			)
@@ -126,14 +156,13 @@ export class MerchantHomeComponent implements OnInit {
 
   public onSubmit(){
     this.nameOfCompany = this.tuser.nameOfCompany;
-    localStorage.setItem('nameOfCompany', JSON.stringify(this.nameOfCompany));
     var jsonData:any
 		jsonData = {
 			email: this.users.email,
 			nameOfCompany: this.nameOfCompany
 		};
     if(this.users.typeOfUser == 'Merchant'){
-			this._userService.merchantsCompany(jsonData).subscribe(
+			this._userService.merchantsCompany(jsonData, this.token).subscribe(
 				(response:any) => {
 					this.infoMessage = response.message;
 					swalWithBootstrapButtons.fire(
@@ -141,6 +170,7 @@ export class MerchantHomeComponent implements OnInit {
 						'El dato ha sido comprobado correctamente',
 						'success'
 					)
+					localStorage.setItem('nameOfCompany', JSON.stringify(this.nameOfCompany));
           this.ngOnInit();
 				},
 				error => {
@@ -148,6 +178,7 @@ export class MerchantHomeComponent implements OnInit {
 					if(errorMessage != null){
 						//console.log("Administrator: "+error.error.message);
 						this.infoMessage = error.error.message;
+						this.isHidden = true;
 						swalWithBootstrapButtons.fire(
 							'¡Error!',
 							this.infoMessage,
@@ -157,7 +188,7 @@ export class MerchantHomeComponent implements OnInit {
 				}
 			)
 		}else if(this.users.typeOfUser == 'Carrier'){
-			this._userService.carriersCompany(jsonData).subscribe(
+			this._userService.carriersCompany(jsonData, this.token).subscribe(
 				(response:any) => {
 					this.infoMessage = response.message;
 					swalWithBootstrapButtons.fire(
@@ -165,12 +196,14 @@ export class MerchantHomeComponent implements OnInit {
 						'El dato ha sido comprobado correctamente',
 						'success'
 					)
+					localStorage.setItem('nameOfCompany', JSON.stringify(this.nameOfCompany));
           this.ngOnInit();
 				},
 				error => {
 					var errorMessage = <any> error;
 					if(errorMessage != null){
 						this.infoMessage = error.error.message;
+						this.isHidden = true;
 						swalWithBootstrapButtons.fire(
 							'¡Error!',
 							this.infoMessage,
@@ -180,7 +213,7 @@ export class MerchantHomeComponent implements OnInit {
 				}
 			)
 		}else if(this.users.typeOfUser == 'Acopio'){
-			this._userService.acopiosCompany(jsonData).subscribe(
+			this._userService.acopiosCompany(jsonData, this.token).subscribe(
 				(response:any) => {
 					this.infoMessage = response.message;
 					swalWithBootstrapButtons.fire(
@@ -188,12 +221,14 @@ export class MerchantHomeComponent implements OnInit {
 						'El dato ha sido comprobado correctamente',
 						'success'
 					)
+					localStorage.setItem('nameOfCompany', JSON.stringify(this.nameOfCompany));
           this.ngOnInit();
 				},
 				error => {
 					var errorMessage = <any> error;
 					if(errorMessage != null){
 						this.infoMessage = error.error.message;
+						this.isHidden = true;
 						swalWithBootstrapButtons.fire(
 							'¡Error!',
 							this.infoMessage,
@@ -203,7 +238,7 @@ export class MerchantHomeComponent implements OnInit {
 				}
 			)
 		}else if(this.users.typeOfUser == 'Productor'){
-			this._userService.productorsCompany(jsonData).subscribe(
+			this._userService.productorsCompany(jsonData, this.token).subscribe(
 				(response:any) => {
 					this.infoMessage = response.message;
 					swalWithBootstrapButtons.fire(
@@ -211,12 +246,14 @@ export class MerchantHomeComponent implements OnInit {
 						'El dato ha sido comprobado correctamente',
 						'success'
 					)
+					localStorage.setItem('nameOfCompany', JSON.stringify(this.nameOfCompany));
           this.ngOnInit();
 				},
 				error => {
 					var errorMessage = <any> error;
 					if(errorMessage != null){
 						this.infoMessage = error.error.message;
+						this.isHidden = true;
 						swalWithBootstrapButtons.fire(
 							'¡Error!',
 							this.infoMessage,

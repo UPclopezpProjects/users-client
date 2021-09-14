@@ -7,6 +7,16 @@ import { Md5 } from 'ts-md5/dist/md5';
 
 const SECRET_KEY = 'secret_key';
 
+import Swal from 'sweetalert2';
+
+const swalWithBootstrapButtons = Swal.mixin({
+	customClass: {
+		confirmButton: 'btn btn-success',
+		cancelButton: 'btn btn-danger'
+	},
+	buttonsStyling: false
+})
+
 @Component({
   selector: 'app-root-welcome',
   templateUrl: './root-welcome.component.html',
@@ -43,13 +53,20 @@ export class RootWelcomeComponent implements OnInit {
     this._userService.getInitialNonce(jsonData).subscribe(
       (response:any) => {
        console.log(response);
-
-       var token = md5.appendStr(JSON.stringify(response.na+response.nb)).end();
-       localStorage.setItem('session', JSON.stringify(response.A));
-       localStorage.setItem('token', JSON.stringify(token));
-       console.log(localStorage.getItem('token'), localStorage.getItem('session'));
-       this._router.navigate(['/rootCreation']);
-
+       if (response.message == 'deny') {
+         swalWithBootstrapButtons.fire(
+           'Error',
+           response.message,
+           'warning'
+         );
+         return;
+       }else{
+         var token = md5.appendStr(JSON.stringify(response.NA+response.NB)).end();
+         localStorage.setItem('session', JSON.stringify(response.A));
+         localStorage.setItem('token', JSON.stringify(token));
+         console.log(localStorage.getItem('token'), localStorage.getItem('session'));
+         this._router.navigate(['/rootCreation']);
+       }
      },
      error => {
        var errorMessage = <any> error;

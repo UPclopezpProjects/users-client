@@ -35,8 +35,8 @@ export class MerchantDetailComponent implements OnInit {
         'Necesitas proporcionar un nombre para tu empresa',
         'warning'
       )
-			return;
-    }
+    }else{
+			this.nameOfCompany = this._userService.getCompany().replace(/['"]+/g, '');
+		}
   }
-
 }
